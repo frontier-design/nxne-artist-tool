@@ -152,7 +152,7 @@ label.file-upload {
 }
 
 #color-theme-1{
-  background-color: black;
+  background-color: rgb(15, 15, 15);
   color: white;
 }
 
@@ -169,4 +169,12 @@ label.file-upload {
 #color-theme-4{
   background-color: rgb(255, 100, 0);
   color: white;
+}
+
+
+#color-theme-1:hover,
+#color-theme-2:hover,
+#color-theme-3:hover,
+#color-theme-4:hover{
+  transform: scale(0.9);
 }

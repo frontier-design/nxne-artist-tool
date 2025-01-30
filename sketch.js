@@ -95,7 +95,7 @@ function setup() {
   });
 
   document.getElementById("color-theme-3").addEventListener("click", () => {
-    bgColor = 180; // Gray
+    bgColor = 200; // Gray
     textFillColor = "blue"; // Blue
     svgTintColor = "blue"; // Blue
     draw();
