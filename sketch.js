@@ -5,22 +5,21 @@ let rectCount = 10;
 let placedRects = [];
 let belowImageIndices = [];
 let aspectRatio = 3 / 4;
-let textSizeValue = 70; // Default text size for post
-let svgSize = 160; // Default SVG size for post
+let textSizeValue = 70;
+let svgSize = 160;
 let canvas;
 let svgRightImg;
 let svgLeftImg;
 let imageUploaded = false;
-let artistName = "Insert Artist Name Here"; // Default text
-let textFillColor = 255; // Default white text
-let bgColor = 15; // Default black background
-let svgTintColor = 255; // Default white tint for SVGs
+let artistName = "Insert Artist Name Here";
+let textFillColor = 255;
+let bgColor = 15;
+let svgTintColor = 255;
 
 function preload() {
   font = loadFont("fonts/Haffer-TRIAL-Medium.ttf");
   img = loadImage("images/uploadAnImage-100.jpg");
 
-  // Load SVGs directly into the canvas
   svgRightImg = loadImage("images/nxneWhite30.svg");
   svgLeftImg = loadImage("images/nxneWhiteText.svg");
 }
@@ -31,13 +30,12 @@ function setup() {
   rectMode(CENTER);
   noLoop();
 
-  // Get the textarea element and listen for changes
   let artistInput = document.getElementById("artist-name-input");
-  artistInput.value = artistName; // Set initial value
+  artistInput.value = artistName;
 
   artistInput.addEventListener("input", () => {
-    artistName = artistInput.value; // Update artist name
-    draw(); // Re-execute draw() to update text correctly
+    artistName = artistInput.value;
+    draw();
   });
 
   const fileInput = document.getElementById("file-upload");
@@ -61,17 +59,17 @@ function setup() {
 
   document.getElementById("post-dimensions").addEventListener("click", () => {
     aspectRatio = 3 / 4;
-    textSizeValue = 70; // Text size for post
+    textSizeValue = 70;
     textLeading(70);
-    svgSize = 160; // SVG size for post
+    svgSize = 160;
     updateCanvasDimensions();
   });
 
   document.getElementById("reel-dimensions").addEventListener("click", () => {
     aspectRatio = 9 / 16;
-    textSizeValue = 50; // Smaller text size for reels
+    textSizeValue = 50;
     textLeading(50);
-    svgSize = 160; // Smaller SVG size for reels
+    svgSize = 160;
     updateCanvasDimensions();
   });
 
@@ -79,32 +77,31 @@ function setup() {
     .getElementById("save-image-button")
     .addEventListener("click", saveCanvasAsImage);
 
-  // Color theme buttons event listeners
   document.getElementById("color-theme-1").addEventListener("click", () => {
-    bgColor = 15; // Black
-    textFillColor = 255; // White
-    svgTintColor = 255; // White
+    bgColor = 15;
+    textFillColor = 255;
+    svgTintColor = 255;
     draw();
   });
 
   document.getElementById("color-theme-2").addEventListener("click", () => {
-    bgColor = 255; // White
-    textFillColor = 0; // Black
-    svgTintColor = 0; // Black
+    bgColor = 255;
+    textFillColor = 0;
+    svgTintColor = 0;
     draw();
   });
 
   document.getElementById("color-theme-3").addEventListener("click", () => {
-    bgColor = 200; // Gray
-    textFillColor = "blue"; // Blue
-    svgTintColor = "blue"; // Blue
+    bgColor = 200;
+    textFillColor = "blue";
+    svgTintColor = "blue";
     draw();
   });
 
   document.getElementById("color-theme-4").addEventListener("click", () => {
-    bgColor = 255; // White
-    textFillColor = color(255, 100, 0); // Orange
-    svgTintColor = color(255, 100, 0); // Orange
+    bgColor = 255;
+    textFillColor = color(255, 100, 0);
+    svgTintColor = color(255, 100, 0);
     draw();
   });
 
@@ -113,7 +110,7 @@ function setup() {
 }
 
 function draw() {
-  background(bgColor); // Apply the chosen background color
+  background(bgColor);
 
   if (img) {
     maxSize = width * 0.85;
@@ -130,47 +127,41 @@ function draw() {
       drawRectangles(x, y, newWidth, newHeight, scaleFactor, false);
     }
 
-    // Draw artist name dynamically with correct color and size
     fill(textFillColor);
     textSize(textSizeValue);
     textFont(font);
     textAlign(LEFT, TOP);
     text(artistName, 240, 100, 400);
 
-    // Adjust SVG sizes dynamically
     let svgLeftAspect = svgLeftImg.width / svgLeftImg.height;
     let svgRightAspect = svgRightImg.width / svgRightImg.height;
 
     let svgLeftHeight = svgSize / svgLeftAspect;
     let svgRightHeight = svgSize / svgRightAspect;
 
-    // Apply tint to the SVGs
     tint(svgTintColor);
-    image(svgLeftImg, 44, height - svgSize - 40, svgSize, svgLeftHeight);
+    image(svgLeftImg, 44, height - 150, svgSize, svgLeftHeight);
     image(
       svgRightImg,
       width - (svgSize + 47),
-      height - svgSize,
+      height - 90,
       svgSize,
       svgRightHeight
     );
-    noTint(); // Reset tint for other elements
+    noTint();
   }
 }
 
 function updateText() {
-  // Define text area dimensions
   let textX = 200;
   let textY = 20;
   let textWidth = 400;
   let textHeight = 100;
 
-  // Clear only the text area by drawing a rectangle with the background color
-  fill(15); // Background color
+  fill(15);
   noStroke();
   rect(textX, textY, textWidth, textHeight);
 
-  // Now draw the updated text in white
   fill(255);
   textSize(70);
   textFont(font);
@@ -186,13 +177,11 @@ function drawRectangles(x, y, imgWidth, imgHeight, scaleFactor, isBelowImage) {
     const shouldDrawBelow = belowImageIndices.includes(i);
     if (shouldDrawBelow !== isBelowImage) continue;
 
-    // Adjust source values to match the scaled image size
     let srcX = map(r.x - r.width / 2 - x, 0, imgWidth, 0, img.width);
     let srcY = map(r.y - r.height / 2 - y, 0, imgHeight, 0, img.height);
     let srcW = map(r.width, 0, imgWidth, 0, img.width);
     let srcH = map(r.height, 0, imgHeight, 0, img.height);
 
-    // Ensure source values are within the correct range
     srcX = constrain(srcX, 0, img.width - srcW);
     srcY = constrain(srcY, 0, img.height - srcH);
 
@@ -201,7 +190,7 @@ function drawRectangles(x, y, imgWidth, imgHeight, scaleFactor, isBelowImage) {
       srcX,
       srcY,
       srcW,
-      srcH, // Use corrected mapped coordinates
+      srcH,
       r.x - r.width / 2,
       r.y - r.height / 2,
       r.width,
@@ -217,7 +206,7 @@ function drawRectangles(x, y, imgWidth, imgHeight, scaleFactor, isBelowImage) {
 
 function regenerateRectangles() {
   if (imageUploaded) {
-    placedRects = []; // Clear previous rectangles
+    placedRects = [];
 
     let x = (width - maxSize) / 2;
     let y = (height - maxSize * (img.height / img.width)) / 2;
@@ -266,7 +255,7 @@ function regenerateRectangles() {
       }
     }
 
-    draw(); // Only re-draw after regenerating rectangles
+    draw();
   }
 }
 
@@ -277,8 +266,8 @@ function handleFile(event) {
     reader.onload = function (e) {
       img = loadImage(e.target.result, () => {
         imageUploaded = true;
-        regenerateRectangles(); // Automatically generate rectangles after upload
-        draw(); // Ensure everything is drawn immediately
+        regenerateRectangles();
+        draw();
       });
     };
     reader.readAsDataURL(file);
