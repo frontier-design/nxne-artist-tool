@@ -1,0 +1,152 @@
+@font-face {
+  font-family: 'Haffer';
+  src: url('./fonts/Haffer-TRIAL-Medium.ttf');
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Haffer", sans-serif;
+}
+
+:root{
+  --offwhite: rgb(224, 224, 224);
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--offwhite);
+}
+
+.container{
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+button{
+  all: unset;
+}
+
+.block{
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 250px;
+}
+
+.play{
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 250px;
+}
+
+label {
+  display: block;
+}
+
+label.file-upload {
+  height: 88px; 
+}
+
+.item{
+  display: flex;
+  align-items: flex-start;
+  background-color: rgba(0, 0, 255, 0.2);
+  color: blue;
+  border-radius: 12px;
+  padding: 8px;
+  text-align: left;
+  height: 70px;
+  width: 100%;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.item:hover{
+  background-color: rgba(0, 0, 255, 1);
+  color: white;
+}
+
+.play .item{
+  background-color: rgba(184, 184, 184, 0.2);
+  color: rgb(183, 183, 183);
+  cursor: crosshair;
+}
+
+.message{
+  opacity: 0;
+  background-color: red;
+  color: white;
+  position: absolute;
+  bottom: -60px;
+  padding: 8px;
+  border-radius: 12px;
+  transition: all 0.15s ease;
+}
+
+.play:hover .message{
+  opacity: 1;
+}
+
+
+.save .item{
+  background-color: rgba(0, 218, 0, 0.35);
+  color: green;
+}
+
+.save .item:hover{
+  background-color: rgba(0, 218, 0, 1);
+  color: white;
+}
+
+.how-to{
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.how-to h3{
+  margin-bottom: 20px;
+}
+
+.how-to p{
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.suggested-hashtags{
+  color: rgba(0, 0, 0, 0.3);
+}
+
+
+#artist-name-input {
+  width: 100%;
+  padding: 8px;
+  height: 70px;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: none;
+  resize: none; /* Prevent manual esizing */
+  color: rgba(142, 142, 142, 1);;
+  overflow-wrap: break-word;
+  white-space: pre-wrap; /* Preserve line breaks */
+  background-color: rgba(142, 142, 142, 0.2);
+}
+
+::placeholder,
+::-webkit-input-placeholder {
+  color: rgba(142, 142, 142, 1);;
+}

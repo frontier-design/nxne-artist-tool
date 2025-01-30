@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sketch</title>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="libraries/p5.min.js"></script>
+  <script src="libraries/p5.sound.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+  <div class="play block">
+    <button class="play-pause-button item">Play/Pause Audio</button>
+    <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload Audio</label>
+    <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
+    <div class="message "> These features will be available soon. </div>
+  </div>
+
+  <div class="container">
+    <div class="uploads block">
+      <label class="file-upload item" for="file-upload" id="upload-button">Upload <br> Image</label>
+      <input class="item" id="file-upload" type="file" accept="image/*" style="display: none;">
+    </div>
+    <div class="regenerate block">
+      <button class="regenerate-button item" id="regenerate-button">Refresh</button>
+    </div>
+    <div class="dimensions block">
+      <button class="post-dimensions item" id="post-dimensions">IG Post Dimensions</button>
+      <button class="reel-dimensions item" id="reel-dimensions">IG Reel & Story <br> Dimensions</button>
+    </div>
+    <div class="artist-name block">
+      <textarea id="artist-name-input" rows="2" placeholder="Insert Artist Name Here"></textarea>
+    </div>
+    <div class="color-options block">
+      <button class="color-button item" id="color-theme-1"> 1 </button>
+      <button class="color-button item" id="color-theme-2"> 2 </button>
+      <button class="color-button item" id="color-theme-3"> 3 </button>
+      <button class="color-button item" id="color-theme-4"> 4 </button>
+    </div>
+    <div class="save block">
+      <button class="save-image-button item" id="save-image-button">Download <br> Image</button>
+    </div>
+  </div>
+
+  <div class="how-to block">
+    <h3> How to Get Started</h3>
+    <p>1. Upload your image using the 'Upload Image' button in the top left</p>
+    <p>2. Replace 'Insert Artist Name Here' with your name</p>
+    <p>3. You can regenerate different layouts using the 'Refresh' button</p>
+    <p>4. Once you have a layout you like, you can Download the image in both IG Post and IG Story dimensions</p>
+    <p>5. Post the image to your socials and let people know you're playing NXNE!</p>
+    <p class="suggested-hashtags">Suggested hashtags: #NXNE2025, #MUSICFEST, #SOUNDON</p>
+
+  </div>
+  <script src="sketch.js"></script>
+</body>
+
+</html>
