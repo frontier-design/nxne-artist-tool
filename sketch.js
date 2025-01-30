@@ -103,8 +103,8 @@ function setup() {
 
   document.getElementById("color-theme-4").addEventListener("click", () => {
     bgColor = 255; // White
-    textFillColor = "orange"; // Orange
-    svgTintColor = "orange"; // Orange
+    textFillColor = color(255, 100, 0); // Orange
+    svgTintColor = color(255, 100, 0); // Orange
     draw();
   });
 

@@ -11,7 +11,7 @@
 }
 
 :root{
-  --offwhite: rgb(224, 224, 224);
+  --offwhite: rgb(211, 211, 211);
 }
 
 body {
@@ -149,4 +149,24 @@ label.file-upload {
 ::placeholder,
 ::-webkit-input-placeholder {
   color: rgba(142, 142, 142, 1);;
+}
+
+#color-theme-1{
+  background-color: black;
+  color: white;
+}
+
+#color-theme-2{
+  background-color: white;
+  color: rgb(0, 0, 0);
+}
+
+#color-theme-3{
+  background-color: rgb(0, 0, 255);
+  color: white;
+}
+
+#color-theme-4{
+  background-color: rgb(255, 100, 0);
+  color: white;
 }
