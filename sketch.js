@@ -86,22 +86,29 @@ function setup() {
 
   document.getElementById("color-theme-2").addEventListener("click", () => {
     bgColor = 255;
-    textFillColor = 0;
-    svgTintColor = 0;
+    textFillColor = color(15, 91, 255);
+    svgTintColor = color(15, 91, 255);
     draw();
   });
 
   document.getElementById("color-theme-3").addEventListener("click", () => {
-    bgColor = 200;
-    textFillColor = "blue";
-    svgTintColor = "blue";
+    bgColor = 15;
+    textFillColor = color(168, 255, 214);
+    svgTintColor = color(168, 255, 214);
     draw();
   });
 
   document.getElementById("color-theme-4").addEventListener("click", () => {
     bgColor = 255;
-    textFillColor = color(255, 100, 0);
-    svgTintColor = color(255, 100, 0);
+    textFillColor = color(255, 82, 47);
+    svgTintColor = color(255, 82, 47);
+    draw();
+  });
+
+  document.getElementById("color-theme-5").addEventListener("click", () => {
+    bgColor = 255;
+    textFillColor = color(217, 245, 131);
+    svgTintColor = color(217, 245, 131);
     draw();
   });
 
@@ -282,7 +289,7 @@ function updateCanvas() {
 }
 
 function saveCanvasAsImage() {
-  saveCanvas(canvas, "nxne_design", "png");
+  saveCanvas(canvas, "NXNE_Post", "jpg");
 }
 
 function updateCanvasDimensions() {

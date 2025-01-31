@@ -157,18 +157,23 @@ label.file-upload {
 }
 
 #color-theme-2{
-  background-color: white;
-  color: rgb(0, 0, 0);
+  color: white;
+  background-color: #0f5bff;
 }
 
 #color-theme-3{
-  background-color: rgb(0, 0, 255);
-  color: white;
+  color: rgb(15, 15, 15);
+  background-color: #a8ffd6;
 }
 
 #color-theme-4{
-  background-color: rgb(255, 100, 0);
+  background-color: #ff532f;
   color: white;
+}
+
+#color-theme-5{
+  background-color: #d9f583;
+  color: black;
 }
 
 
