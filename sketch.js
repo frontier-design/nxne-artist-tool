@@ -138,7 +138,7 @@ function draw() {
     let newHeight = img.height * scaleFactor;
 
     // Compute a reactive scale for the main image.
-    let mainReactScale = 1 + currentLevel * 0.2; // Adjust multiplier as needed.
+    let mainReactScale = 1 + currentLevel * 0.15; // Adjust multiplier as needed.
     let newWidthReact = newWidth * mainReactScale;
     let newHeightReact = newHeight * mainReactScale;
     let xReactive = (width - newWidthReact) / 2;

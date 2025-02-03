@@ -3,8 +3,9 @@ const statusIndicator = document.getElementById("statusIndicator");
 
 let mediaRecorder;
 let recordedChunks = [];
-let recordingTimeout;
+let recordingTimeout; // Timeout to stop recording automatically
 
+// Replace with your CloudConvert API key
 const CLOUDCONVERT_API_KEY =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYmMxNzNmOTFjZGNmMDVjYjNiYzc4ZWY1YWNjMzdmYzU4NTkzYWZmNTg3MmRkYWY3ODlkZDQyNTg5YzY5ZDg3YzgwYmVkN2Y2N2VkNjY1OWYiLCJpYXQiOjE3Mzc3NDg1NzguMDUwNzA2LCJuYmYiOjE3Mzc3NDg1NzguMDUwNzA4LCJleHAiOjQ4OTM0MjIxNzguMDQ3MDIzLCJzdWIiOiI3MDgzODI5NyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ0YXNrLnJlYWQiLCJ0YXNrLndyaXRlIl19.mkTQCPfjt8PcYknj9Pm81RpoSDEPZw-Y6FY4Tl_fND1bjh0H4ZDC8T1L3PD3dUslZfuO2NdRXkN9cSEpcjG9EQyCyhDlortYRdzJWVK8XQbgpCc3jwioWhb8ChnzVF3LvBcnNnCSkVo3jA_SsiGukyJJSZrEcq2ryVXKxIGHLKOux3u3U3qgZFxBw8TE5qkUSAmv3-ILks6zM2Zx9et3KnSkfox-JoNzP07JMN-p3JsbMTECXwR2tEmKPd0sA1ZfLxxcFHX2ilOYzczFwqp9ME8_O6C-Vc1S7P8heAxdAehRoqFaoNyEQcm_cjZqvn1G1jQniLMTYWqfe6LZU0JYIn6xZZPSgZZVjhARs6U1vu4gyXkkG8fXDWQIjYiTGX2L5e7PHQ8lhFw-W8KeksCZigQSV0-oZaUXoZ0yQlKoS-b0adkM9V3uCTe6GV4iDbwPHseCReADkLTR0GpqOaH2sQVLw8eru_OTdBI3Jv8V4bsp1cb0HUAyQZQ2movJ6j0ags3d4c42o0dP2PVFf80rkVJmlp3nPnfenBlYdjzSwYG8SNCarcEUzpgU7_IXu5mRCHnB3_ddt-JyIj7CBpo_8-U9b_PyN7O1fmLFe-7R-s1pr3G7glyRYwSGp-QAQvuTiWSJD-VbzSHwEoRupzvpWt_wW30EN8Ij9TXIxzP2g0M";
 
@@ -28,6 +29,7 @@ const waitForTaskCompletion = async (taskId) => {
       throw new Error("Task failed with error.");
     }
 
+    // Wait for 3 seconds before checking again
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 };
@@ -37,6 +39,7 @@ const convertWebMToMP4 = async (webmBlob) => {
     statusIndicator.innerText = "Requesting import/upload task...";
     console.log("Requesting import/upload task...");
 
+    // Request an import/upload task from CloudConvert
     const importResponse = await fetch(
       "https://api.cloudconvert.com/v2/import/upload",
       {
@@ -64,12 +67,15 @@ const convertWebMToMP4 = async (webmBlob) => {
     statusIndicator.innerText = "Uploading WebM file...";
     console.log("Uploading WebM file...");
 
+    // Upload the WebM file to the provided URL
     const formData = new FormData();
 
+    // Add all required fields from the form parameters
     for (const [key, value] of Object.entries(formParameters)) {
       formData.append(key, value);
     }
 
+    // Add the WebM file
     formData.append("file", webmBlob, "recording.webm");
 
     const uploadResponse = await fetch(uploadUrl, {
@@ -88,6 +94,7 @@ const convertWebMToMP4 = async (webmBlob) => {
     console.log("File successfully uploaded.");
     statusIndicator.innerText = "File uploaded. Creating conversion job...";
 
+    // Create a conversion job with CloudConvert
     const conversionResponse = await fetch(
       "https://api.cloudconvert.com/v2/jobs",
       {
@@ -100,13 +107,13 @@ const convertWebMToMP4 = async (webmBlob) => {
           tasks: {
             "convert-my-file": {
               operation: "convert",
-              input: importData.data.id,
+              input: importData.data.id, // Reference the import task by ID
               input_format: "webm",
               output_format: "mp4",
             },
             "export-my-file": {
               operation: "export/url",
-              input: "convert-my-file",
+              input: "convert-my-file", // Reference the convert task
             },
           },
         }),
@@ -118,6 +125,7 @@ const convertWebMToMP4 = async (webmBlob) => {
     statusIndicator.innerText =
       "Conversion job created. Retrieving export task...";
 
+    // Retrieve the export task
     const exportTask = conversionData?.data?.tasks?.find(
       (task) => task.operation === "export/url"
     );
@@ -131,6 +139,7 @@ const convertWebMToMP4 = async (webmBlob) => {
 
     const completedExportTask = await waitForTaskCompletion(exportTask.id);
 
+    // Retrieve the download URL
     const downloadUrl = completedExportTask?.result?.files?.[0]?.url;
     if (!downloadUrl) {
       throw new Error(
@@ -153,17 +162,24 @@ recordBtn.addEventListener("click", async () => {
     statusIndicator.innerText = "Preparing canvas...";
     console.log("Preparing canvas...");
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    statusIndicator.innerText = "Starting recording...";
-    console.log("Starting recording...");
-
     const canvasElement = document.querySelector("canvas");
     if (!canvasElement) {
       throw new Error(
         "Canvas element not found. Please ensure the sketch is running."
       );
     }
+
+    // Warm up the canvas/encoder by forcing a toBlob conversion.
+    await new Promise((resolve) => {
+      canvasElement.toBlob(() => {
+        console.log("Canvas warmed up.");
+        resolve();
+      }, "image/webp");
+    });
+
+    statusIndicator.innerText = "Starting recording...";
+    console.log("Starting recording...");
+
     const canvasStream = canvasElement.captureStream(60);
 
     const audioContext = getAudioContext();
@@ -208,6 +224,7 @@ recordBtn.addEventListener("click", async () => {
           "Conversion successful. Initiating download...";
         console.log("Conversion successful. Initiating download...");
 
+        // Trigger the MP4 download.
         const a = document.createElement("a");
         a.href = mp4Url;
         a.download = "canvas-recording.mp4";
@@ -231,6 +248,7 @@ recordBtn.addEventListener("click", async () => {
       "Recording started. Automatically stopping in 10 seconds...";
     recordBtn.disabled = true;
 
+    // Automatically stop recording after 10 seconds
     recordingTimeout = setTimeout(() => {
       if (mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
