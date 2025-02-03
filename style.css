@@ -41,10 +41,6 @@ button{
   width: 250px;
 }
 
-.play{
-  width: 250px;
-}
-
 label {
   display: block;
 }
@@ -184,3 +180,32 @@ label.file-upload {
 #color-theme-4:hover{
   transform: scale(0.9);
 }
+
+
+.record-settings{
+  display: flex;
+  flex-direction: column;
+}
+
+#recordBtn{
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 12px;
+  background-color: #ff522f52;
+  color: #ff532f;
+  height: auto;
+}
+
+#recordBtn:hover{
+  background-color: #ff532f;
+  color: white;
+}
+
+#statusIndicator{
+  height: auto;
+  margin-right: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  color: white;
+}
+

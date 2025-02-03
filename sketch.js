@@ -1,7 +1,7 @@
 let img;
 let font;
 let maxSize;
-let rectCount = 10;
+let rectCount = 15;
 let placedRects = [];
 let belowImageIndices = [];
 let aspectRatio = 3 / 4;
@@ -30,7 +30,8 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight - 20);
+  // Create the canvas with initial dimensions.
+  canvas = createCanvas(750, 750);
   textFont(font);
   rectMode(CENTER);
   noLoop();
@@ -135,15 +136,27 @@ function draw() {
     let scaleFactor = min(maxSize / img.width, maxSize / img.height, 1);
     let newWidth = img.width * scaleFactor;
     let newHeight = img.height * scaleFactor;
-    let x = (width - newWidth) / 2;
-    let y = (height - newHeight) / 2;
 
-    image(img, x, y, newWidth, newHeight);
+    // Compute a reactive scale for the main image.
+    let mainReactScale = 1 + currentLevel * 0.2; // Adjust multiplier as needed.
+    let newWidthReact = newWidth * mainReactScale;
+    let newHeightReact = newHeight * mainReactScale;
+    let xReactive = (width - newWidthReact) / 2;
+    let yReactive = (height - newHeightReact) / 2;
+
+    // Draw the main image with reactive scaling.
+    image(img, xReactive, yReactive, newWidthReact, newHeightReact);
 
     if (imageUploaded) {
-      // Use the amplitude-based reactivity for both layers.
-      drawRectangles(x, y, newWidth, newHeight, true);
-      drawRectangles(x, y, newWidth, newHeight, false);
+      // Draw rectangles using the reactive coordinates so they stay in sync.
+      drawRectangles(xReactive, yReactive, newWidthReact, newHeightReact, true);
+      drawRectangles(
+        xReactive,
+        yReactive,
+        newWidthReact,
+        newHeightReact,
+        false
+      );
     }
 
     fill(textFillColor);
@@ -195,7 +208,7 @@ function updateText() {
 function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
   let centerXCanvas = width / 2;
   let centerYCanvas = height / 2;
-  let multiplier = -1.5; // Increased multiplier for more reactivity
+  let multiplier = -1; // Increased multiplier for more reactivity
 
   for (let i = 0; i < placedRects.length; i++) {
     let r = placedRects[i];
@@ -217,7 +230,6 @@ function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
     let desiredOffsetY = dy * currentLevel * multiplier;
 
     // Smoothly interpolate the rectangle's offset.
-    // Initialize offset properties if they don't exist.
     if (r.offsetX === undefined) {
       r.offsetX = desiredOffsetX;
     } else {
@@ -368,7 +380,10 @@ function saveCanvasAsImage() {
 }
 
 function updateCanvasDimensions() {
-  resizeCanvas(windowHeight * aspectRatio, windowHeight - 20);
+  // Updated scaling logic: keep the canvas height constant, and adjust the width according to the aspect ratio.
+  let fixedHeight = 750 - 20; // For example, 730 pixels
+  let newWidth = fixedHeight * aspectRatio;
+  resizeCanvas(newWidth, fixedHeight);
   updateCanvas();
 }
 
