@@ -20,6 +20,7 @@ let svgTintColor = 255;
 let sound;
 let amplitude;
 let currentLevel = 0;
+let fft; // For waveform analysis
 
 function preload() {
   font = loadFont("fonts/Haffer-TRIAL-Medium.ttf");
@@ -127,8 +128,10 @@ function setup() {
 function draw() {
   background(bgColor);
 
-  // Get the current sound amplitude (value between 0 and 1)
+  // (We still update currentLevel in case you want to mix methods.)
   currentLevel = amplitude ? amplitude.getLevel() : 0;
+  // Retrieve the current waveform data from the FFT.
+  let waveform = fft ? fft.waveform() : [];
 
   if (img) {
     maxSize = width * 0.85;
@@ -141,9 +144,9 @@ function draw() {
     image(img, x, y, newWidth, newHeight);
 
     if (imageUploaded) {
-      // Use the amplitude-based reactivity for both layers.
-      drawRectangles(x, y, newWidth, newHeight, true);
-      drawRectangles(x, y, newWidth, newHeight, false);
+      // Pass the waveform data to the rectangle drawing function.
+      drawRectangles(x, y, newWidth, newHeight, waveform, true);
+      drawRectangles(x, y, newWidth, newHeight, waveform, false);
     }
 
     fill(textFillColor);
@@ -189,13 +192,13 @@ function updateText() {
   text(artistName, textX, textY, textWidth);
 }
 
-// Updated drawRectangles: Uses amplitude-based reactivity.
-// Each rectangle’s offset is smoothly interpolated using lerp()
-// so that rapid fluctuations are smoothed out.
-function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
+// Updated drawRectangles: Now uses a sample from the sound waveform.
+// For each rectangle, we map its index to an index in the waveform array and use that
+// value (between -1 and 1) to compute a desired offset.
+function drawRectangles(x, y, imgWidth, imgHeight, waveform, isBelowImage) {
   let centerXCanvas = width / 2;
   let centerYCanvas = height / 2;
-  let multiplier = -1.5; // Increased multiplier for more reactivity
+  let multiplier = 0.5; // Controls the overall displacement
 
   for (let i = 0; i < placedRects.length; i++) {
     let r = placedRects[i];
@@ -213,20 +216,28 @@ function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
     // Compute the vector from the rectangle's original position to the canvas center.
     let dx = centerXCanvas - r.x;
     let dy = centerYCanvas - r.y;
-    let desiredOffsetX = dx * currentLevel * multiplier;
-    let desiredOffsetY = dy * currentLevel * multiplier;
+    // Map this rectangle's index to an index in the waveform array.
+    // (If waveform is empty, default waveValue to 0.)
+    let waveIndex =
+      waveform.length > 0
+        ? floor(map(i, 0, placedRects.length, 0, waveform.length))
+        : 0;
+    let waveValue = waveform[waveIndex] || 0; // value between -1 and 1
+
+    // Compute the desired offset based on the waveform sample.
+    let desiredOffsetX = dx * waveValue * multiplier;
+    let desiredOffsetY = dy * waveValue * multiplier;
 
     // Smoothly interpolate the rectangle's offset.
-    // Initialize offset properties if they don't exist.
     if (r.offsetX === undefined) {
       r.offsetX = desiredOffsetX;
     } else {
-      r.offsetX = lerp(r.offsetX, desiredOffsetX, 0.35);
+      r.offsetX = lerp(r.offsetX, desiredOffsetX, 0.2);
     }
     if (r.offsetY === undefined) {
       r.offsetY = desiredOffsetY;
     } else {
-      r.offsetY = lerp(r.offsetY, desiredOffsetY, 0.35);
+      r.offsetY = lerp(r.offsetY, desiredOffsetY, 0.2);
     }
 
     copy(
@@ -328,10 +339,11 @@ function handleAudioFile(event) {
     sound = loadSound(
       fileURL,
       () => {
-        // Initialize amplitude and smooth it for a smoother response.
+        // Initialize amplitude (if needed) and FFT for waveform analysis.
         amplitude = new p5.Amplitude();
         amplitude.setInput(sound);
-        // amplitude.smooth(0.05);
+        fft = new p5.FFT(0.8, 1024);
+        fft.setInput(sound);
         sound.play();
         loop(); // Start the draw loop for reactive visuals
       },

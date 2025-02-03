@@ -20,24 +20,13 @@
 </head>
 
 <body>
-  <div class="play block">
-    <button class="play-pause-button item">Play/Pause Audio</button>
-    <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload Audio</label>
-    <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
-    <div class="message "> These features will be available soon. </div>
-  </div>
 
   <div class="container">
-    <div class="uploads block">
+    <div class="play block">
       <label class="file-upload item" for="file-upload" id="upload-button">Upload <br> Image</label>
       <input class="item" id="file-upload" type="file" accept="image/*" style="display: none;">
-    </div>
-    <div class="regenerate block">
-      <button class="regenerate-button item" id="regenerate-button">Refresh</button>
-    </div>
-    <div class="dimensions block">
-      <button class="post-dimensions item" id="post-dimensions">IG Post Dimensions</button>
-      <button class="reel-dimensions item" id="reel-dimensions">IG Reel & Story <br> Dimensions</button>
+      <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload <br> Audio</label>
+      <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
     </div>
     <div class="artist-name block">
       <textarea id="artist-name-input" rows="2" placeholder="Insert Artist Name Here"></textarea>
@@ -48,6 +37,16 @@
       <button class="color-button item" id="color-theme-3"> 3 </button>
       <button class="color-button item" id="color-theme-4"> 4 </button>
       <button class="color-button item" id="color-theme-5"> 5 </button>
+    </div>
+    <div class="uploads block compose">
+      <button class="play-pause-button item">Play/Pause Audio</button>
+    </div>
+    <div class="regenerate block compose">
+      <button class="regenerate-button item" id="regenerate-button">Refresh</button>
+    </div>
+    <div class="dimensions block">
+      <button class="post-dimensions item" id="post-dimensions">IG Post Dimensions</button>
+      <button class="reel-dimensions item" id="reel-dimensions">IG Reel & Story <br> Dimensions</button>
     </div>
     <div class="save block">
       <button class="save-image-button item" id="save-image-button">Download <br> Image</button>

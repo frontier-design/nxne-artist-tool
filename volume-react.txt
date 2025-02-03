@@ -195,7 +195,7 @@ function updateText() {
 function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
   let centerXCanvas = width / 2;
   let centerYCanvas = height / 2;
-  let multiplier = -1.5; // Increased multiplier for more reactivity
+  let multiplier = 1.5; // Increased multiplier for more reactivity
 
   for (let i = 0; i < placedRects.length; i++) {
     let r = placedRects[i];
