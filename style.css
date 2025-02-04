@@ -3,11 +3,18 @@
   src: url('./fonts/Haffer-TRIAL-Medium.ttf');
 }
 
+@font-face {
+  font-family: 'Haffer-Regular';
+  src: url('./fonts/Haffer-TRIAL-Regular.otf');
+}
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Haffer", sans-serif;
+  font-family: "Haffer-Regular", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
 }
 
 :root{
@@ -21,12 +28,42 @@ body {
   align-items: center;
   justify-content: center;
   background-color: var(--offwhite);
+  overflow: hidden;
 }
+
+canvas{
+  margin-top: -10px;
+}
+
 
 .container{
   position: absolute;
   top: 10px;
   left: 20px;
+  max-height: calc(100vh - 20px);
+  overflow-y: scroll;
+  background-color: white;
+  border-radius:12px;
+  padding: 20px 25px;
+  padding-bottom: 10px;
+}
+
+section{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 12px;
+  /* border: 1px solid red; */
+  padding: 15px 0px;
+}
+
+section h3{
+  width: 100%;
+  font-size: 0.95rem;
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+  color: black;
+  border-bottom: 1px solid black;
 }
 
 button{
@@ -34,7 +71,6 @@ button{
 }
 
 .block{
-  margin-bottom: 10px;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -46,41 +82,42 @@ label {
 }
 
 label.file-upload {
-  height: 88px; 
+  height: 70px; 
 }
 
 .item{
   display: flex;
   align-items: flex-start;
-  background-color: rgba(0, 0, 255, 0.2);
+  background-color: rgba(0, 0, 255, 0.15);
   color: blue;
   border-radius: 12px;
   padding: 8px;
   text-align: left;
-  height: 70px;
+  height: 30px;
   width: 100%;
   transition: all 0.15s ease;
   cursor: pointer;
+  font-size: 0.95rem;
 }
 
 .item:hover{
-  background-color: rgba(0, 0, 255, 1);
+  background-color: blue;
   color: white;
 }
 
-.play .item{
+.file-imports .item{
   background-color: rgba(255, 0, 255, 0.15);
   color: magenta;
 }
 
-.play .item:hover{
+.file-imports .item:hover{
   background-color: rgba(255, 0, 255, 1);
   color: white;
 }
 
 .message{
   opacity: 0;
-  background-color: red;
+  /* background-color: red; */
   color: white;
   position: absolute;
   bottom: -60px;
@@ -89,7 +126,7 @@ label.file-upload {
   transition: all 0.15s ease;
 }
 
-.play:hover .message{
+.file-imports:hover .message{
   opacity: 1;
 }
 
@@ -110,7 +147,7 @@ label.file-upload {
   right: 20px;
   display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgb(200,200,200);
   border-radius: 12px;
   padding: 20px;
 }
@@ -126,6 +163,12 @@ label.file-upload {
 
 .suggested-hashtags{
   color: rgba(0, 0, 0, 0.3);
+}
+
+.how-to span{
+  font-weight: bolder;
+  font-family: 'Haffer';
+  text-transform: uppercase;
 }
 
 
@@ -173,11 +216,20 @@ label.file-upload {
   color: black;
 }
 
+#color-theme-1,
+#color-theme-2,
+#color-theme-3,
+#color-theme-4,
+#color-theme-5{
+  height: 50px;
+}
+
 
 #color-theme-1:hover,
 #color-theme-2:hover,
 #color-theme-3:hover,
-#color-theme-4:hover{
+#color-theme-4:hover,
+#color-theme-5:hover{
   transform: scale(0.9);
 }
 
@@ -191,13 +243,13 @@ label.file-upload {
   display: flex;
   flex-direction: column;
   padding-bottom: 12px;
-  background-color: #ff522f52;
-  color: #ff532f;
+  background-color: #ff2f2f52;
+  color: #ff2f2f;
   height: auto;
 }
 
 #recordBtn:hover{
-  background-color: #ff532f;
+  background-color: #ff2f2f;
   color: white;
 }
 
@@ -207,5 +259,191 @@ label.file-upload {
   background-color: rgba(0, 0, 0, 0);
   padding: 0;
   color: white;
+  padding: 10px 0px;
+  padding-bottom: 0px;
+  height: calc(auto + 50px);
 }
 
+.layout-options-wrapper{
+  display: flex;
+  gap: 10px;
+}
+
+
+.dimensions .item{
+  background-color: rgba(255, 130, 35, 0.15);
+  color: rgb(255, 130, 35);
+}
+
+.dimensions .item:hover{
+  background-color: rgb(255, 130, 35);
+  color: white;
+}
+
+.overlay{
+  display: none !important;
+ 
+}
+
+.canvas-size-wrapper .item,
+.layout-options-wrapper .item{
+  height: 50px;
+}
+
+.container.collapsed .content {
+  display: none;
+}
+
+.container {
+  transition: max-height 0.3s ease-out;
+}
+
+.container.collapsed {
+  max-height: 65px;
+  padding-bottom: 10px;
+}
+
+.toggle-wrapper{
+  height: auto;
+}
+
+#toggleContainerBtn{
+  padding: 5px 10px;
+  border-radius: 0px;
+  background-color: rgba(230, 230, 230, 1);
+  border-radius: 120px;
+  cursor: pointer;
+  width: calc(100% - 20px);
+}
+
+#toggleContainerBtn:hover{
+  background-color: rgba(210, 210, 210, 1);
+}
+
+.dimension-div{
+  z-index: -100;
+  border: 1px solid red;
+}
+
+
+
+/* POP UP —————————————————————————————————————————————————————————————————————————————————————————— */
+
+/* Style for the overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for the popup container */
+.popup-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px;
+  height: 250px;
+  max-width: 90%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.popup-close-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  cursor: pointer;
+  width: 30px;
+  font-size: 1rem;
+  aspect-ratio: 1;
+  border-radius: 100px;
+  background-color: rgb(220,220,220);
+}
+
+.popup-close-btn:hover {
+  background-color: rgb(200,200,200);
+}
+
+.nxne-logo {
+  display: block;
+  margin: 0px auto 25px auto;
+  max-width: 10%;
+}
+.popup-sentence {
+  line-height: 1.5rem;
+}
+
+/* POP UP —————————————————————————————————————————————————————————————————————————————————————————— */
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1188px){
+
+  .overlay-wrapper img{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 180px;
+  }
+  .overlay-wrapper h3{
+    width: 250px;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  .container.collapsed {
+    width: 100px;
+    padding-bottom: 10px;
+  }
+
+  .how-to{
+    width: 200px;
+    right: 10px;
+  }
+
+}
+
+@media screen and (max-width: 976px) {
+  .overlay{
+    display: block !important;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(15, 15, 15);
+    color: white;
+  }
+
+  .overlay-wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  } 
+}

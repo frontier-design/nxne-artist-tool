@@ -21,6 +21,8 @@ let sound;
 let amplitude;
 let currentLevel = 0;
 
+let dimensionsDiv; // Div for displaying current dimension mode
+
 function preload() {
   font = loadFont("fonts/Haffer-TRIAL-Medium.ttf");
   img = loadImage("images/uploadAnImage-100.jpg");
@@ -30,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-  // Create the canvas with initial dimensions.
+  // Create canvas at fixed width (750) and initial height (750)
   canvas = createCanvas(750, 750);
   textFont(font);
   rectMode(CENTER);
@@ -39,7 +41,6 @@ function setup() {
   textSizeValue = 70;
   textLeading(70);
 
-  // Artist name input
   let artistInput = document.getElementById("artist-name-input");
   artistInput.value = artistName;
   artistInput.addEventListener("input", () => {
@@ -47,27 +48,24 @@ function setup() {
     draw();
   });
 
-  // Image file upload
   const fileInput = document.getElementById("file-upload");
   fileInput.addEventListener("change", handleFile);
 
-  // Audio file upload
   document
     .getElementById("audio-upload")
     .addEventListener("change", handleAudioFile);
-
-  // Play/Pause toggle button for audio
   document
     .querySelector(".play-pause-button")
     .addEventListener("click", toggleAudio);
 
-  // Post and reel dimension buttons
+  // When Post or Reel buttons are clicked, update the aspect ratio and canvas dimensions.
   document.getElementById("post-dimensions").addEventListener("click", () => {
     aspectRatio = 3 / 4;
     textSizeValue = 70;
     textLeading(70);
     svgSize = 160;
     updateCanvasDimensions();
+    dimensionsDiv.html("3:4 Post Dimensions");
   });
   document.getElementById("reel-dimensions").addEventListener("click", () => {
     aspectRatio = 9 / 16;
@@ -75,16 +73,15 @@ function setup() {
     textLeading(50);
     svgSize = 160;
     updateCanvasDimensions();
+    dimensionsDiv.html("9:16 Reel Dimensions");
   });
 
-  // Regenerate button (only when image is uploaded)
   document.getElementById("regenerate-button").addEventListener("click", () => {
     if (imageUploaded) {
       regenerateRectangles();
     }
   });
 
-  // Color themes
   document.getElementById("color-theme-1").addEventListener("click", () => {
     bgColor = 15;
     textFillColor = 255;
@@ -116,10 +113,21 @@ function setup() {
     draw();
   });
 
-  // Save button
   document
     .getElementById("save-image-button")
     .addEventListener("click", saveCanvasAsImage);
+
+  // Create a div to display the current dimension mode (non-clickable text)
+  dimensionsDiv = createDiv("3:4 Post Dimensions");
+  dimensionsDiv.class("dimensions-div");
+  dimensionsDiv.style("font-size", "0.8rem");
+  dimensionsDiv.style("color", "black");
+  dimensionsDiv.style("background", "rgb(190,190,190)");
+  dimensionsDiv.style("padding", "5px 15px");
+  dimensionsDiv.style("border-radius", "120px");
+  dimensionsDiv.style("z-index", "-20");
+  // Position the div relative to the canvas (10px from the left, below the canvas)
+  dimensionsDiv.position(10, canvas.position().y + height + 10);
 
   updateCanvasDimensions();
   updateCanvas();
@@ -128,7 +136,6 @@ function setup() {
 function draw() {
   background(bgColor);
 
-  // Get the current sound amplitude (value between 0 and 1)
   currentLevel = amplitude ? amplitude.getLevel() : 0;
 
   if (img) {
@@ -137,18 +144,15 @@ function draw() {
     let newWidth = img.width * scaleFactor;
     let newHeight = img.height * scaleFactor;
 
-    // Compute a reactive scale for the main image.
-    let mainReactScale = 1 + currentLevel * 0.15; // Adjust multiplier as needed.
+    let mainReactScale = 1 + currentLevel * 0.15;
     let newWidthReact = newWidth * mainReactScale;
     let newHeightReact = newHeight * mainReactScale;
     let xReactive = (width - newWidthReact) / 2;
     let yReactive = (height - newHeightReact) / 2;
 
-    // Draw the main image with reactive scaling.
     image(img, xReactive, yReactive, newWidthReact, newHeightReact);
 
     if (imageUploaded) {
-      // Draw rectangles using the reactive coordinates so they stay in sync.
       drawRectangles(xReactive, yReactive, newWidthReact, newHeightReact, true);
       drawRectangles(
         xReactive,
@@ -202,13 +206,10 @@ function updateText() {
   text(artistName, textX, textY, textWidth);
 }
 
-// Updated drawRectangles: Uses amplitude-based reactivity.
-// Each rectangle’s offset is smoothly interpolated using lerp()
-// so that rapid fluctuations are smoothed out.
 function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
   let centerXCanvas = width / 2;
   let centerYCanvas = height / 2;
-  let multiplier = -1; // Increased multiplier for more reactivity
+  let multiplier = -1.25;
 
   for (let i = 0; i < placedRects.length; i++) {
     let r = placedRects[i];
@@ -223,13 +224,11 @@ function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
     srcX = constrain(srcX, 0, img.width - srcW);
     srcY = constrain(srcY, 0, img.height - srcH);
 
-    // Compute the vector from the rectangle's original position to the canvas center.
     let dx = centerXCanvas - r.x;
     let dy = centerYCanvas - r.y;
     let desiredOffsetX = dx * currentLevel * multiplier;
     let desiredOffsetY = dy * currentLevel * multiplier;
 
-    // Smoothly interpolate the rectangle's offset.
     if (r.offsetX === undefined) {
       r.offsetX = desiredOffsetX;
     } else {
@@ -331,21 +330,20 @@ function handleAudioFile(event) {
   const file = event.target.files[0];
   if (file && file.type.startsWith("audio")) {
     const fileURL = URL.createObjectURL(file);
-    // Stop any previously loaded sound
+
     if (sound) {
       sound.stop();
       sound.disconnect();
     }
-    // Load the new sound file
+
     sound = loadSound(
       fileURL,
       () => {
-        // Initialize amplitude and smooth it for a smoother response.
         amplitude = new p5.Amplitude();
         amplitude.setInput(sound);
-        // amplitude.smooth(0.05);
+
         sound.play();
-        loop(); // Start the draw loop for reactive visuals
+        loop();
       },
       () => {
         console.error("Failed to load sound");
@@ -360,10 +358,10 @@ function toggleAudio() {
   if (sound) {
     if (sound.isPlaying()) {
       sound.pause();
-      noLoop(); // Stop animation when audio is paused
+      noLoop();
     } else {
       sound.play();
-      loop(); // Resume animation when audio plays
+      loop();
     }
   } else {
     console.error("No sound loaded.");
@@ -380,11 +378,14 @@ function saveCanvasAsImage() {
 }
 
 function updateCanvasDimensions() {
-  // Updated scaling logic: keep the canvas height constant, and adjust the width according to the aspect ratio.
-  let fixedHeight = 750 - 20; // For example, 730 pixels
+  let fixedHeight = 730;
   let newWidth = fixedHeight * aspectRatio;
   resizeCanvas(newWidth, fixedHeight);
   updateCanvas();
+  dimensionsDiv.position(
+    canvas.position().x,
+    canvas.position().y + height + 10
+  );
 }
 
 function getBelowImageIndices(total) {

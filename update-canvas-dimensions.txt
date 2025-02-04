@@ -1,0 +1,7 @@
+function updateCanvasDimensions() {
+  // Fixed width and variable height:
+  let fixedWidth = 450;
+  let newHeight = fixedWidth / aspectRatio;
+  resizeCanvas(fixedWidth, newHeight);
+  updateCanvas();
+}

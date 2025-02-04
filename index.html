@@ -21,55 +21,85 @@
 
 <body>
 
-  <div class="container">
-    <div class="play block">
-      <label class="file-upload item" for="file-upload" id="upload-button">Upload <br> Image</label>
-      <input class="item" id="file-upload" type="file" accept="image/*" style="display: none;">
-      <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload <br> Audio</label>
-      <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
+  <div class="overlay">
+    <div class="overlay-wrapper">
+      <img src="./images/nxneWhite30.svg" alt="">
+      <h3> Please View This Website on a Desktop Device</h3>
     </div>
-    <div class="artist-name block">
-      <textarea id="artist-name-input" rows="2" placeholder="Insert Artist Name Here"></textarea>
-    </div>
-    <div class="color-options block">
-      <button class="color-button item" id="color-theme-1"> 1 </button>
-      <button class="color-button item" id="color-theme-2"> 2 </button>
-      <button class="color-button item" id="color-theme-3"> 3 </button>
-      <button class="color-button item" id="color-theme-4"> 4 </button>
-      <button class="color-button item" id="color-theme-5"> 5 </button>
-    </div>
-    <div class="uploads block compose">
-      <button class="play-pause-button item">Play/Pause Audio</button>
-    </div>
-    <div class="regenerate block compose">
-      <button class="regenerate-button item" id="regenerate-button">Refresh</button>
-    </div>
-    <div class="dimensions block">
-      <button class="post-dimensions item" id="post-dimensions">IG Post Dimensions</button>
-      <button class="reel-dimensions item" id="reel-dimensions">IG Reel & Story <br> Dimensions</button>
-    </div>
-    <div class="save block">
-      <button class="save-image-button item" id="save-image-button">Download <br> Image</button>
-    </div>
+  </div>
 
-    <div class="record-settings block">
-      <div class=" item" id="recordBtn">
-        Record <br>
-        <div class="item" id="statusIndicator"> </div>
+  <div class="container">
+
+    <div class="toggle-wrapper "></div>
+
+    <section class="upload-wrapper">
+      <h3> Customize Your Post </h3>
+      <div class="file-imports block">
+        <label class="file-upload item" for="file-upload" id="upload-button">Upload Image</label>
+        <input class="item" id="file-upload" type="file" accept="image/*" style="display: none;">
+        <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload Audio</label>
+        <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
       </div>
-    </div>
+      <div class="artist-name block">
+        <textarea id="artist-name-input" rows="2" placeholder="Insert Artist Name Here"></textarea>
+      </div>
+      <div class="color-options block">
+        <button class="color-button item" id="color-theme-1"> 1 </button>
+        <button class="color-button item" id="color-theme-2"> 2 </button>
+        <button class="color-button item" id="color-theme-3"> 3 </button>
+        <button class="color-button item" id="color-theme-4"> 4 </button>
+        <button class="color-button item" id="color-theme-5"> 5 </button>
+      </div>
+    </section>
+
+    <section class="layout-options-wrapper">
+      <h3> Layout Control </h3>
+      <div class="regenerate block compose">
+        <button class="regenerate-button item" id="regenerate-button">Refresh</button>
+        <button class="play-pause-button item">Play/Pause Audio</button>
+      </div>
+    </section>
+
+    <section class="canvas-size-wrapper">
+      <h3> Dimensions </h3>
+      <div class="dimensions block">
+        <button class="post-dimensions item" id="post-dimensions"> 3:4 <br> Post </button>
+        <button class="reel-dimensions item" id="reel-dimensions"> 9:16 <br> Story </button>
+      </div>
+    </section>
+
+    <section class="save-settings-wrapper">
+      <h3> Save Options </h3>
+      <div class="save block">
+        <button class="save-image-button item" id="save-image-button">Download Image</button>
+      </div>
+
+      <div class="record-settings block">
+        <div class=" item" id="recordBtn">
+          Download Video
+          <div class="item" id="statusIndicator"> </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <div class="how-to block">
     <h3> How to Get Started</h3>
-    <p>1. Upload your image using the 'Upload Image' button in the top left</p>
-    <p>2. Replace 'Insert Artist Name Here' with your name</p>
-    <p>3. You can regenerate different layouts using the 'Refresh' button</p>
-    <p>4. Once you have a layout you like, you can Download the image in both IG Post and IG Story dimensions</p>
-    <p>5. Post the image to your socials and let people know you're playing NXNE!</p>
+    <p>1. Upload your <span>image</span> and <span>audio</span> using the menu in the top left</p>
+    <p>2. Replace <span>Insert Artist Name Here</span> with your name</p>
+    <p>3. Choose a <span>colour</span> that fits well with your image</p>
+    <p>4. You can generate different layouts using the <span>Refresh</span> button</p>
+    <p>
+      5. Once you have a layout you like, you can download the image or in both
+      <span>Post</span> and <span>Story</span> dimensions
+    </p>
+    <p>6. Post the image to your socials and let people know you're playing NXNE!</p>
     <p class="suggested-hashtags">Suggested hashtags: #NXNE2025, #MUSICFEST, #SOUNDON</p>
 
   </div>
+  <script src="popup.js"></script>
+  <script src="toggleContainer.js"></script>
   <script src="record.js"></script>
   <script src="sketch.js"></script>
 </body>
