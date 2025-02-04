@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const toggleBtn = document.createElement("button");
-  toggleBtn.innerText = "↑";
+  toggleBtn.innerText = "↑  Hide";
   toggleBtn.id = "toggleContainerBtn";
 
   toggleBtn.style.zIndex = "1";
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleBtn.addEventListener("click", function () {
     container.classList.toggle("collapsed");
     if (container.classList.contains("collapsed")) {
-      toggleBtn.innerText = "↓";
+      toggleBtn.innerText = "↓ Show";
     } else {
-      toggleBtn.innerText = "↑";
+      toggleBtn.innerText = "↑  Hide";
     }
   });
 });

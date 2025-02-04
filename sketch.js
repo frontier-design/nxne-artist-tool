@@ -4,7 +4,7 @@ let maxSize;
 let rectCount = 15;
 let placedRects = [];
 let belowImageIndices = [];
-let aspectRatio = 3 / 4;
+let aspectRatio = 4 / 5;
 let textSizeValue = 70;
 let svgSize = 160;
 let canvas;
@@ -60,7 +60,7 @@ function setup() {
 
   // When Post or Reel buttons are clicked, update the aspect ratio and canvas dimensions.
   document.getElementById("post-dimensions").addEventListener("click", () => {
-    aspectRatio = 3 / 4;
+    aspectRatio = 4 / 5;
     textSizeValue = 70;
     textLeading(70);
     svgSize = 160;
