@@ -123,7 +123,7 @@ function setup() {
   dimensionsDiv.style("font-size", "0.8rem");
   dimensionsDiv.style("color", "black");
   dimensionsDiv.style("background", "rgb(190,190,190)");
-  dimensionsDiv.style("padding", "5px 15px");
+  dimensionsDiv.style("padding", "5px 10px");
   dimensionsDiv.style("border-radius", "120px");
   dimensionsDiv.style("z-index", "-20");
   // Position the div relative to the canvas (10px from the left, below the canvas)

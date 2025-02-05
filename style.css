@@ -132,12 +132,12 @@ label.file-upload {
 
 
 .save .item{
-  background-color: #ff2f2f52;
-  color: #ff2f2f;
+  background-color: #9a2eff52;
+  color: #8400ff;
 }
 
 .save .item:hover{
-  background-color: #ff2f2f;
+  background-color: #8400ff;
   color: white;
 }
 
@@ -243,13 +243,13 @@ label.file-upload {
   display: flex;
   flex-direction: column;
   padding-bottom: 12px;
-  background-color: #ff2f2f52;
-  color: #ff2f2f;
+  background-color: #f01bff52;
+  color: #f01bff;
   height: auto;
 }
 
 #recordBtn:hover{
-  background-color: #ff2f2f;
+  background-color: #f01bff;
   color: white;
 }
 
@@ -310,19 +310,22 @@ label.file-upload {
 #toggleContainerBtn{
   padding: 5px 10px;
   border-radius: 0px;
-  background-color: rgba(230, 230, 230, 1);
+  font-size: 0.8rem;
+  background-color: rgb(200,200,200);
   border-radius: 120px;
   cursor: pointer;
-  width: calc(100% - 20px);
+  width: auto;
+  margin-bottom: 10px;
+  transition: all 0.15s ease;
 }
 
 #toggleContainerBtn:hover{
-  background-color: rgba(210, 210, 210, 1);
+  background-color: black;
+  color: white;
 }
 
 .dimension-div{
   z-index: -100;
-  border: 1px solid red;
 }
 
 
@@ -349,11 +352,12 @@ label.file-upload {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 400px;
-  height: 250px;
+  width: 500px;
+  height: 500px;
   max-width: 90%;
   background-color: #fff;
-  padding: 20px;
+  padding: 50px;
+  padding-top: 80px;
   border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -381,11 +385,13 @@ label.file-upload {
 
 .nxne-logo {
   display: block;
-  margin: 0px auto 25px auto;
+  margin: 0px auto 35px auto;
   max-width: 10%;
 }
 .popup-sentence {
-  line-height: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.4rem;
+  margin-bottom: 15px;
 }
 
 /* POP UP —————————————————————————————————————————————————————————————————————————————————————————— */

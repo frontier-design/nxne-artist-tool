@@ -28,15 +28,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create the sentences
   const sentence1 = document.createElement("p");
   sentence1.classList.add("popup-sentence");
-  sentence1.innerText = "Welcome to the NXNE Artist Tool.";
+  sentence1.innerText =
+    "Welcome to NXNE 2025! We look forward to helping you put on an amazing show and ensure you play a packed out.";
 
   const sentence2 = document.createElement("p");
   sentence2.classList.add("popup-sentence");
-  sentence2.innerText = "Customize your post blah blah blah";
+  sentence2.innerText =
+    "This tool was created to help artists like yourself easily develop social assets to share with your fans. It uses your music and photos to create unique graphics that bring the experience of your music to life.";
 
   const sentence3 = document.createElement("p");
   sentence3.classList.add("popup-sentence");
-  sentence3.innerText = "Click ( ← ) to get started.";
+  sentence3.innerText =
+    "We encourage you to use this tool to create social posts to promote your NXNE show. This tool will remain live until the end of NXNE 2025, so we hope you use it many times leading up to NXNE!";
 
   // Append the elements to the popup container
   popup.appendChild(closeBtn);
