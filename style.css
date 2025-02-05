@@ -315,6 +315,7 @@ label.file-upload {
 }
 
 #toggleContainerBtn{
+  display: inline-block;
   padding: 5px 10px;
   border-radius: 0px;
   font-size: 0.8rem;
