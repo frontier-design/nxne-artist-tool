@@ -8,6 +8,11 @@
   src: url('./fonts/Haffer-TRIAL-Regular.otf');
 }
 
+@font-face {
+  font-family: 'Haffer-Bold';
+  src: url('./fonts/Haffer-TRIAL-Bold.ttf');
+} 
+
 *{
   margin: 0;
   padding: 0;
@@ -40,7 +45,7 @@ canvas{
   position: absolute;
   top: 10px;
   left: 20px;
-  max-height: calc(100vh - 20px);
+  max-height: calc(100vh - 10px);
   overflow-y: scroll;
   background-color: white;
   border-radius:12px;
@@ -143,13 +148,14 @@ label.file-upload {
 
 .how-to{
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   right: 20px;
   display: flex;
   flex-direction: column;
-  background-color: rgb(200,200,200);
+  background-color: rgb(190,190,190);
   border-radius: 12px;
   padding: 20px;
+  padding-bottom: 10px;
 }
 
 .how-to h3{
@@ -162,7 +168,8 @@ label.file-upload {
 }
 
 .suggested-hashtags{
-  color: rgba(0, 0, 0, 0.3);
+  color: rgb(105, 105, 105);
+  font-family: 'Haffer';
 }
 
 .how-to span{
@@ -353,7 +360,7 @@ label.file-upload {
   justify-content: center;
   flex-direction: column;
   width: 500px;
-  height: 500px;
+  height: 75vh;
   max-width: 90%;
   background-color: #fff;
   padding: 50px;
@@ -385,14 +392,30 @@ label.file-upload {
 
 .nxne-logo {
   display: block;
-  margin: 0px auto 35px auto;
-  max-width: 10%;
+  margin: 0px auto 55px auto;
+  max-width: 50%;
 }
+
 .popup-sentence {
-  font-size: 0.95rem;
-  line-height: 1.4rem;
+  font-size: 0.9rem;
+  line-height: 1.3rem;
   margin-bottom: 15px;
+  width: 90%;
 }
+
+.first-sentence{
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.popup-sentence span {
+  font-weight: bolder;
+  font-family: 'Haffer-Bold';
+  text-transform: uppercase;
+}
+
 
 /* POP UP —————————————————————————————————————————————————————————————————————————————————————————— */
 

@@ -22,23 +22,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const logo = document.createElement("img");
   logo.id = "nxneLogo";
   logo.classList.add("nxne-logo");
-  logo.src = "./images/faviconBlack.svg"; // Adjust the path as needed
+  logo.src = "./images/nxne30Black.svg"; // Adjust the path as needed
   logo.alt = "NXNE Logo";
 
-  // Create the sentences
+  // Create the sentences with some text bolded using
   const sentence1 = document.createElement("p");
   sentence1.classList.add("popup-sentence");
-  sentence1.innerText =
-    "Welcome to NXNE 2025! We look forward to helping you put on an amazing show and ensure you play a packed out.";
+  sentence1.classList.add("first-sentence");
+  sentence1.innerHTML =
+    "Welcome to NXNE 2025! We look forward to helping you put on an amazing show and ensure you play apacked-out performance.";
 
   const sentence2 = document.createElement("p");
   sentence2.classList.add("popup-sentence");
-  sentence2.innerText =
-    "This tool was created to help artists like yourself easily develop social assets to share with your fans. It uses your music and photos to create unique graphics that bring the experience of your music to life.";
+  sentence2.innerHTML =
+    "This tool was created to help artists like yourself easily develop social assets to share with your fans. <span>It uses your music and photos to create unique graphics that bring the experience of your music to life.</span>";
 
   const sentence3 = document.createElement("p");
   sentence3.classList.add("popup-sentence");
-  sentence3.innerText =
+  sentence3.innerHTML =
     "We encourage you to use this tool to create social posts to promote your NXNE show. This tool will remain live until the end of NXNE 2025, so we hope you use it many times leading up to NXNE!";
 
   // Append the elements to the popup container

@@ -11,7 +11,7 @@ let canvas;
 let svgRightImg;
 let svgLeftImg;
 let imageUploaded = false;
-let artistName = "Insert Artist Name Here";
+let artistName = "Insert Your Artist Name";
 let textFillColor = 255;
 let bgColor = 15;
 let svgTintColor = 255;
@@ -375,6 +375,10 @@ function updateCanvas() {
 
 function saveCanvasAsImage() {
   saveCanvas(canvas, "NXNE_Post", "jpg");
+}
+
+function windowResized() {
+  updateCanvasDimensions();
 }
 
 function updateCanvasDimensions() {
