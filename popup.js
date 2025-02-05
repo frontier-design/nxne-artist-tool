@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   sentence1.classList.add("popup-sentence");
   sentence1.classList.add("first-sentence");
   sentence1.innerHTML =
-    "Welcome to NXNE 2025! We look forward to helping you put on an amazing show and ensure you play apacked-out performance.";
+    "Welcome to NXNE 2025! We look forward to helping you put on an amazing show and ensuring you play a packed house.";
 
   const sentence2 = document.createElement("p");
   sentence2.classList.add("popup-sentence");
