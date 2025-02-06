@@ -16,6 +16,7 @@ let textFillColor = 255;
 let bgColor = 15;
 let svgTintColor = 255;
 
+// Variables for sound
 let sound;
 let amplitude;
 let currentLevel = 0;
@@ -31,6 +32,7 @@ function preload() {
 }
 
 function setup() {
+  // Create canvas at fixed width (750) and initial height (750)
   canvas = createCanvas(750, 750);
   textFont(font);
   rectMode(CENTER);
@@ -56,6 +58,7 @@ function setup() {
     .querySelector(".play-pause-button")
     .addEventListener("click", toggleAudio);
 
+  // When Post or Reel buttons are clicked, update the aspect ratio and canvas dimensions.
   document.getElementById("post-dimensions").addEventListener("click", () => {
     aspectRatio = 4 / 5;
     textSizeValue = 70;
@@ -114,6 +117,7 @@ function setup() {
     .getElementById("save-image-button")
     .addEventListener("click", saveCanvasAsImage);
 
+  // Create a div to display the current dimension mode (non-clickable text)
   dimensionsDiv = createDiv("3:4 Post Dimensions");
   dimensionsDiv.class("dimensions-div");
   dimensionsDiv.style("font-size", "0.8rem");
@@ -122,7 +126,7 @@ function setup() {
   dimensionsDiv.style("padding", "5px 10px");
   dimensionsDiv.style("border-radius", "120px");
   dimensionsDiv.style("z-index", "-20");
-
+  // Position the div relative to the canvas (10px from the left, below the canvas)
   dimensionsDiv.position(10, canvas.position().y + height + 10);
 
   updateCanvasDimensions();
@@ -171,13 +175,15 @@ function draw() {
     let svgLeftHeight = svgSize / svgLeftAspect;
     let svgRightHeight = svgSize / svgRightAspect;
 
+    // Draw background for svgLeftImg (using push/pop so it doesn't affect other drawing)
     push();
     rectMode(CORNER);
     noStroke();
     fill(bgColor);
-    rect(44 - 10, height - 160, svgSize + 20, svgLeftHeight + 20);
+    rect(44, height - 150, svgSize, svgLeftHeight);
     pop();
 
+    // Draw the svg images
     tint(svgTintColor);
     image(svgLeftImg, 44, height - 150, svgSize, svgLeftHeight);
     image(
