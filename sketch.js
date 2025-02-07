@@ -180,7 +180,7 @@ function draw() {
     rectMode(CORNER);
     noStroke();
     fill(bgColor);
-    rect(44, height - 150, svgSize, svgLeftHeight);
+    rect(44 - 12, height - 160, svgSize + 20, svgLeftHeight + 20);
     pop();
 
     // Draw the svg images
