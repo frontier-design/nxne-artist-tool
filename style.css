@@ -205,29 +205,35 @@ label.file-upload {
 
 #color-theme-2{
   color: white;
-  background-color: #0f5bff;
+  background-color: #0059ff;
 }
 
 #color-theme-3{
   color: rgb(15, 15, 15);
-  background-color: #a8ffd6;
+  background-color: #89ffd2;
 }
 
 #color-theme-4{
-  background-color: #ff532f;
+  background-color: #ff5d00;
   color: white;
 }
 
 #color-theme-5{
-  background-color: #d9f583;
+  background-color: #00ed5f;
   color: black;
+}
+
+#color-theme-6{
+  background-color: #fd0077;
+  color: white;
 }
 
 #color-theme-1,
 #color-theme-2,
 #color-theme-3,
 #color-theme-4,
-#color-theme-5{
+#color-theme-5,
+#color-theme-6{
   height: 50px;
 }
 
@@ -335,6 +341,10 @@ label.file-upload {
 .dimension-div{
   z-index: -100;
 }
+
+
+
+
 
 
 

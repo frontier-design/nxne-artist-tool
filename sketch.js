@@ -90,26 +90,32 @@ function setup() {
   });
   document.getElementById("color-theme-2").addEventListener("click", () => {
     bgColor = 255;
-    textFillColor = color(15, 91, 255);
-    svgTintColor = color(15, 91, 255);
+    textFillColor = color(0, 89, 255);
+    svgTintColor = color(0, 89, 255);
     draw();
   });
   document.getElementById("color-theme-3").addEventListener("click", () => {
     bgColor = 15;
-    textFillColor = color(168, 255, 214);
-    svgTintColor = color(168, 255, 214);
+    textFillColor = color(137, 255, 210);
+    svgTintColor = color(137, 255, 210);
     draw();
   });
   document.getElementById("color-theme-4").addEventListener("click", () => {
     bgColor = 255;
-    textFillColor = color(255, 82, 47);
-    svgTintColor = color(255, 82, 47);
+    textFillColor = color(255, 94, 0);
+    svgTintColor = color(255, 94, 0);
     draw();
   });
   document.getElementById("color-theme-5").addEventListener("click", () => {
     bgColor = 15;
-    textFillColor = color(217, 245, 131);
-    svgTintColor = color(217, 245, 131);
+    textFillColor = color(0, 237, 95);
+    svgTintColor = color(0, 237, 95);
+    draw();
+  });
+  document.getElementById("color-theme-6").addEventListener("click", () => {
+    bgColor = 255;
+    textFillColor = color(253, 0, 118);
+    svgTintColor = color(253, 0, 118);
     draw();
   });
 
