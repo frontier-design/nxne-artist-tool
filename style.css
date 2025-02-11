@@ -242,7 +242,8 @@ label.file-upload {
 #color-theme-2:hover,
 #color-theme-3:hover,
 #color-theme-4:hover,
-#color-theme-5:hover{
+#color-theme-5:hover,
+#color-theme-6:hover{
   transform: scale(0.9);
 }
 
