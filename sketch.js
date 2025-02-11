@@ -24,11 +24,11 @@ let currentLevel = 0;
 let dimensionsDiv;
 
 function preload() {
-  font = loadFont("fonts/Haffer-TRIAL-Medium.ttf");
+  font = loadFont("fonts/53561.otf");
   img = loadImage("images/uploadAnImage-100.jpg");
 
   svgRightImg = loadImage("images/nxneWhite30.svg");
-  svgLeftImg = loadImage("images/nxneWhiteText.svg");
+  svgLeftImg = loadImage("images/tt-outlined.svg");
 }
 
 function setup() {
