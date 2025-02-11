@@ -90,7 +90,7 @@ const convertWebMToMP4 = async (webmBlob) => {
               operation: "convert",
               input: importData.data.id,
               input_format: "webm",
-              output_format: "mov",
+              output_format: "mp4",
             },
             "export-my-file": {
               operation: "export/url",
