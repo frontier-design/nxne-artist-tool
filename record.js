@@ -1,3 +1,27 @@
+// Add blinking keyframes to the document (if not already defined)
+const style = document.createElement("style");
+document.head.appendChild(style);
+
+// Function to create the blinking recording notice
+function createRecordingNotice() {
+  const notice = document.createElement("div");
+  notice.id = "recordingNotice";
+  notice.innerText = "Recording in progress. Please do not change any options.";
+  notice.style.position = "fixed";
+  notice.style.top = "20px";
+  notice.style.left = "50%";
+  notice.style.transform = "translateX(-50%)";
+  notice.style.padding = "10px 20px";
+  notice.style.backgroundColor = "rgba(255, 0, 0, 1)";
+  notice.style.color = "#fff";
+  notice.style.fontSize = "20px";
+  notice.style.borderRadius = "100px";
+  notice.style.fontWeight = "bold";
+  notice.style.zIndex = "10000";
+  notice.style.textAlign = "center";
+  return notice;
+}
+
 const recordBtn = document.getElementById("recordBtn");
 const statusIndicator = document.getElementById("statusIndicator");
 
@@ -184,7 +208,17 @@ recordBtn.addEventListener("click", async () => {
         recordedChunks.push(event.data);
       }
     };
+
+    // Display the blinking recording notice
+    const recordingNotice = createRecordingNotice();
+    document.body.appendChild(recordingNotice);
+
     mediaRecorder.onstop = async () => {
+      // Remove the recording notice when recording stops
+      const notice = document.getElementById("recordingNotice");
+      if (notice) {
+        notice.remove();
+      }
       statusIndicator.innerText = "Recording stopped. Starting conversion...";
       console.log("Recording stopped. Starting conversion...");
       const webmBlob = new Blob(recordedChunks, { type: "video/webm" });

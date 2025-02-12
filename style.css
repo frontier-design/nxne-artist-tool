@@ -247,7 +247,6 @@ label.file-upload {
   transform: scale(0.9);
 }
 
-
 .record-settings{
   display: flex;
   flex-direction: column;
@@ -276,6 +275,13 @@ label.file-upload {
   padding: 10px 0px;
   padding-bottom: 0px;
   height: calc(auto + 50px);
+}
+
+.video-hover{
+  border: 1px solid red;
+  position: absolute;
+  z-index: 1000;
+  right: -100%;
 }
 
 .layout-options-wrapper{
