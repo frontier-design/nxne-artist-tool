@@ -91,6 +91,10 @@ const convertWebMToMP4 = async (webmBlob) => {
               input: importData.data.id,
               input_format: "webm",
               output_format: "mp4",
+              converteroptions: {
+                width: 3840,
+                height: 2160,
+              },
             },
             "export-my-file": {
               operation: "export/url",
@@ -139,12 +143,19 @@ recordBtn.addEventListener("click", async () => {
         "Canvas element not found. Please ensure the sketch is running."
       );
     }
+
+    // Warm up the canvas so that it's fully rendered
     await new Promise((resolve) => {
       canvasElement.toBlob(() => {
         console.log("Canvas warmed up.");
         resolve();
       }, "image/webp");
     });
+
+    // Wait a couple of animation frames to ensure the canvas is fully rendered
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
     statusIndicator.innerText = "Starting recording...";
     console.log("Starting recording...");
     const canvasStream = canvasElement.captureStream(60);
@@ -201,14 +212,14 @@ recordBtn.addEventListener("click", async () => {
     mediaRecorder.start();
     console.log("Recording started.");
     statusIndicator.innerText =
-      "Recording in progress. This will take 10 seconds.";
+      "Recording in progress. This will take 15 seconds.";
     recordBtn.disabled = true;
     recordingTimeout = setTimeout(() => {
       if (mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
-        console.log("Automatically stopping recording after 10 seconds...");
+        console.log("Automatically stopping recording after 15 seconds...");
       }
-    }, 10000);
+    }, 15000);
   } catch (err) {
     console.error("Error starting recording:", err.message || err);
     alert(`Error: ${err.message}`);

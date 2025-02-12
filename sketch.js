@@ -33,7 +33,7 @@ function preload() {
 
 function setup() {
   // Create canvas at fixed width (750) and initial height (750)
-  canvas = createCanvas(750, 750);
+  canvas = createCanvas(1920, 1080);
   textFont(font);
   rectMode(CENTER);
   noLoop();
