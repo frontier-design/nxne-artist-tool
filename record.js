@@ -182,6 +182,7 @@ recordBtn.addEventListener("click", async () => {
 
     statusIndicator.innerText = "Starting recording...";
     console.log("Starting recording...");
+
     const canvasStream = canvasElement.captureStream(60);
     const audioContext = getAudioContext();
     if (audioContext.state === "suspended") {
@@ -194,13 +195,27 @@ recordBtn.addEventListener("click", async () => {
       ...canvasStream.getVideoTracks(),
       ...audioStream.getAudioTracks(),
     ]);
-    const options = {
-      mimeType: "video/webm;codecs=vp9",
-      videoBitsPerSecond: 10000000, // Increased bitrate to 10 Mbps
-    };
-    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-      options.mimeType = "video/webm";
+
+    // Determine a supported MIME type
+    let chosenMimeType = "";
+    if (
+      MediaRecorder.isTypeSupported('video/mp4;codecs="avc1.42E01E, mp4a.40.2"')
+    ) {
+      chosenMimeType = 'video/mp4;codecs="avc1.42E01E, mp4a.40.2"';
+    } else if (MediaRecorder.isTypeSupported("video/webm;codecs=vp9")) {
+      chosenMimeType = "video/webm;codecs=vp9";
+    } else if (MediaRecorder.isTypeSupported("video/webm")) {
+      chosenMimeType = "video/webm";
+    } else {
+      throw new Error("No supported MIME type found for MediaRecorder");
     }
+    console.log("Using MIME type:", chosenMimeType);
+
+    const options = {
+      mimeType: chosenMimeType,
+      videoBitsPerSecond: 10000000, // 10 Mbps
+    };
+
     mediaRecorder = new MediaRecorder(combinedStream, options);
     recordedChunks = [];
     mediaRecorder.ondataavailable = (event) => {
@@ -221,28 +236,46 @@ recordBtn.addEventListener("click", async () => {
       }
       statusIndicator.innerText = "Recording stopped. Starting conversion...";
       console.log("Recording stopped. Starting conversion...");
-      const webmBlob = new Blob(recordedChunks, { type: "video/webm" });
-      try {
-        const mp4Url = await convertWebMToMP4(webmBlob);
-        statusIndicator.innerText =
-          "Conversion successful. Initiating download...";
-        console.log("Conversion successful. Initiating download...");
+
+      // Create a blob using the chosen MIME type
+      const recordedBlob = new Blob(recordedChunks, { type: chosenMimeType });
+
+      // If the blob is in WebM format, convert it to MP4.
+      // Otherwise (if recorded as MP4), trigger download directly.
+      if (chosenMimeType.startsWith("video/webm")) {
+        try {
+          const mp4Url = await convertWebMToMP4(recordedBlob);
+          statusIndicator.innerText =
+            "Conversion successful. Initiating download...";
+          console.log("Conversion successful. Initiating download...");
+          const a = document.createElement("a");
+          a.href = mp4Url;
+          a.download = "canvas-recording.mp4";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          console.log("Download triggered.");
+          statusIndicator.innerText = "Download triggered.";
+        } catch (error) {
+          console.error("Error during conversion:", error.message || error);
+          alert("Conversion to MP4 failed. Please try again.");
+        }
+      } else {
+        // Recorded as MP4—download directly.
         const a = document.createElement("a");
-        a.href = mp4Url;
+        const mp4BlobUrl = window.URL.createObjectURL(recordedBlob);
+        a.href = mp4BlobUrl;
         a.download = "canvas-recording.mp4";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        console.log("Download triggered.");
+        console.log("Download triggered (MP4 recorded directly).");
         statusIndicator.innerText = "Download triggered.";
-      } catch (error) {
-        console.error("Error during conversion:", error.message || error);
-        alert("Conversion to MP4 failed. Please try again.");
-      } finally {
-        recordBtn.disabled = false;
       }
+      recordBtn.disabled = false;
       recordedChunks = [];
     };
+
     mediaRecorder.start();
     console.log("Recording started.");
     statusIndicator.innerText =
