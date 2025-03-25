@@ -103,6 +103,24 @@
   <script src="toggleContainer.js"></script>
   <script src="record.js"></script>
   <script src="sketch.js"></script>
+
+
+  <script>
+    const refreshButton = document.getElementById("regenerate-button");
+
+    const colors = ["#00009b", "#0000ff"];
+    let colorIndex = 0;
+
+    refreshButton.addEventListener("click", () => {
+      refreshButton.style.backgroundColor = colors[colorIndex];
+      colorIndex = (colorIndex + 1) % colors.length;
+    });
+
+    refreshButton.addEventListener("mouseleave", () => {
+      refreshButton.style.backgroundColor = ""; // Reset to original/default style
+    });
+  </script>
 </body>
+
 
 </html>
