@@ -108,16 +108,16 @@
   <script>
     const refreshButton = document.getElementById("regenerate-button");
 
-    const colors = ["#00009b", "#0000ff"];
-    let colorIndex = 0;
+    refreshButton.addEventListener("mousedown", () => {
+      refreshButton.style.backgroundColor = "#00009b";
+    });
 
-    refreshButton.addEventListener("click", () => {
-      refreshButton.style.backgroundColor = colors[colorIndex];
-      colorIndex = (colorIndex + 1) % colors.length;
+    refreshButton.addEventListener("mouseup", () => {
+      refreshButton.style.backgroundColor = "";
     });
 
     refreshButton.addEventListener("mouseleave", () => {
-      refreshButton.style.backgroundColor = ""; // Reset to original/default style
+      refreshButton.style.backgroundColor = "";
     });
   </script>
 </body>
