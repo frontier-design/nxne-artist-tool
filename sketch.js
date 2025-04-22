@@ -33,6 +33,7 @@ let venuesList = [
   "Handlebar",
   "Collective Arts",
   "Cafe Pamenar",
+  "Bovine Sex Club",
   "Horseshoe Tavern",
   "Cameron House",
   "Paddock Tavern",
