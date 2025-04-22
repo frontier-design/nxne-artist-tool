@@ -278,7 +278,7 @@ function draw() {
 
     // define margins as a fraction of the canvas
     const nameX = width * 0.46; // 12.5% in from left
-    const nameY = height * 0.09; //  9% down from top
+    const nameY = height * 0.1; //  9% down from top
     const nameBoxW = width * 0.8; // allow it to fill 50% of canvas width
 
     text(artistName, nameX, nameY, nameBoxW);
