@@ -271,12 +271,17 @@ function draw() {
       drawRectangles(x0, y0, w1, h1, false);
     }
 
-    // artist name
+    // artist name — now fully responsive
     fill(textFillColor);
     textSize(textSizeValue);
     textAlign(LEFT, TOP);
-    text(artistName, 240, 100, 400);
 
+    // define margins as a fraction of the canvas
+    const nameX = width * 0.46; // 12.5% in from left
+    const nameY = height * 0.09; //  9% down from top
+    const nameBoxW = width * 0.8; // allow it to fill 50% of canvas width
+
+    text(artistName, nameX, nameY, nameBoxW);
     // event info
     drawEventInfo();
 
