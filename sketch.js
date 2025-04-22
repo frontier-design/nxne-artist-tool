@@ -1,56 +1,99 @@
-let img;
-let font;
+let img, font;
 let maxSize;
 let rectCount = 15;
 let placedRects = [];
 let belowImageIndices = [];
 let aspectRatio = 4 / 5;
 let textSizeValue = 70;
-let svgSize = 160;
 let canvas;
 let svgRightImg;
-let svgLeftImg;
 let imageUploaded = false;
 let artistName = "Insert Your Artist Name";
 let textFillColor = 255;
 let bgColor = 15;
 let svgTintColor = 255;
 
-// Variables for sound
-let sound;
-let amplitude;
-let currentLevel = 0;
+// Audio
+let sound,
+  amplitude,
+  currentLevel = 0;
 
+// UI overlays
 let dimensionsDiv;
+
+// Logo & event‐info sizing & margins
+let logoSize = 120;
+let eventTextSize = 20;
+let svgMargin = { x: 50, y: 40 };
+let eventMargin = { x: 30, y: 30 };
+
+// Event dropdown data
+let venuesList = [
+  "Supermarket Bar & Variety",
+  "Handlebar",
+  "Collective Arts",
+  "Cafe Pamenar",
+  "Horseshoe Tavern",
+  "Cameron House",
+  "Paddock Tavern",
+  "Future-Infinity Room",
+  "Rivoli",
+  "Drake Underground",
+  "Theatre Centre",
+  "Death & Taxes",
+  "The Drake Hotel",
+  "Jean Darlene Piano Room",
+  "The Painted Lady",
+  "The Garrison",
+  "The Baby G",
+  "Burdock Brewery",
+  "Duffy's Tavern",
+  "The Pilot",
+  "Dance Cave",
+  "Lee's Palace",
+];
+let selectedVenue = "";
+const dateList = [
+  "Wednesday, June 11 2025",
+  "Thursday, June 12 2025",
+  "Friday, June 13 2025",
+  "Saturday, June 14 2025",
+  "Sunday, June 15 2025",
+];
+let selectedDate = dateList[0];
+let selectedTime = "";
 
 function preload() {
   font = loadFont("fonts/53561.otf");
   img = loadImage("images/uploadAnImage-100.jpg");
-
   svgRightImg = loadImage("images/nxneWhite30.svg");
-  svgLeftImg = loadImage("images/tt-outlined.svg");
 }
 
 function setup() {
-  // Create canvas at fixed width (750) and initial height (750)
+  // Canvas
   canvas = createCanvas(1920, 1080);
   textFont(font);
   rectMode(CENTER);
   noLoop();
 
+  // Initial sizes
   textSizeValue = 70;
   textLeading(70);
+  logoSize = 120;
+  eventTextSize = 20;
+  svgMargin = { x: 50, y: 40 };
+  eventMargin = { x: 30, y: 30 };
 
-  let artistInput = document.getElementById("artist-name-input");
+  // Artist name
+  const artistInput = document.getElementById("artist-name-input");
   artistInput.value = artistName;
   artistInput.addEventListener("input", () => {
     artistName = artistInput.value;
     draw();
   });
 
-  const fileInput = document.getElementById("file-upload");
-  fileInput.addEventListener("change", handleFile);
-
+  // File & audio
+  document.getElementById("file-upload").addEventListener("change", handleFile);
   document
     .getElementById("audio-upload")
     .addEventListener("change", handleAudioFile);
@@ -58,30 +101,42 @@ function setup() {
     .querySelector(".play-pause-button")
     .addEventListener("click", toggleAudio);
 
-  // When Post or Reel buttons are clicked, update the aspect ratio and canvas dimensions.
+  // Refresh
+  document.getElementById("regenerate-button").addEventListener("click", () => {
+    if (imageUploaded) regenerateRectangles();
+  });
+
+  // Dimension toggles
   document.getElementById("post-dimensions").addEventListener("click", () => {
     aspectRatio = 4 / 5;
     textSizeValue = 70;
     textLeading(70);
-    svgSize = 160;
+    logoSize = 120; // Post: larger logo
+    eventTextSize = 20; // Post: larger event text
+    svgMargin.x = 50;
+    svgMargin.y = 40;
+    eventMargin.x = 30;
+    eventMargin.y = 30;
     updateCanvasDimensions();
     dimensionsDiv.html("3:4 Post Dimensions");
+    draw();
   });
   document.getElementById("reel-dimensions").addEventListener("click", () => {
     aspectRatio = 9 / 16;
     textSizeValue = 50;
     textLeading(50);
-    svgSize = 160;
+    logoSize = 100; // Reel: smaller logo
+    eventTextSize = 20; // Reel: smaller event text
+    svgMargin.x = 270;
+    svgMargin.y = 55 + 15;
+    eventMargin.x = 30;
+    eventMargin.y = 80 + 20;
     updateCanvasDimensions();
     dimensionsDiv.html("9:16 Reel Dimensions");
+    draw();
   });
 
-  document.getElementById("regenerate-button").addEventListener("click", () => {
-    if (imageUploaded) {
-      regenerateRectangles();
-    }
-  });
-
+  // Color themes
   document.getElementById("color-theme-1").addEventListener("click", () => {
     bgColor = 15;
     textFillColor = 255;
@@ -119,148 +174,184 @@ function setup() {
     draw();
   });
 
+  // Save
   document
     .getElementById("save-image-button")
     .addEventListener("click", saveCanvasAsImage);
 
-  // Create a div to display the current dimension mode (non-clickable text)
+  // Dimension label
   dimensionsDiv = createDiv("3:4 Post Dimensions");
-  dimensionsDiv.class("dimensions-div");
+  dimensionsDiv.class("dimensions");
   dimensionsDiv.style("font-size", "0.8rem");
   dimensionsDiv.style("color", "black");
   dimensionsDiv.style("background", "rgb(190,190,190)");
   dimensionsDiv.style("padding", "5px 10px");
   dimensionsDiv.style("border-radius", "120px");
   dimensionsDiv.style("z-index", "-20");
-  // Position the div relative to the canvas (10px from the left, below the canvas)
-  dimensionsDiv.position(10, canvas.position().y + height + 10);
+  // initial positioning
+  dimensionsDiv.position(
+    canvas.position().x,
+    canvas.position().y + height + 10
+  );
+
+  // Venue dropdown
+  const venueSelect = document.getElementById("venue-select");
+  venuesList.forEach((v) => {
+    let o = document.createElement("option");
+    o.value = o.text = v;
+    venueSelect.appendChild(o);
+  });
+  selectedVenue = venueSelect.value;
+  venueSelect.addEventListener("change", () => {
+    selectedVenue = venueSelect.value;
+    draw();
+  });
+
+  // Date dropdown
+  const dateSelect = document.getElementById("date-select");
+  dateList.forEach((d) => {
+    let o = document.createElement("option");
+    o.value = o.text = d;
+    dateSelect.appendChild(o);
+  });
+  selectedDate = dateSelect.value;
+  dateSelect.addEventListener("change", () => {
+    selectedDate = dateSelect.value;
+    draw();
+  });
+
+  // Time dropdown
+  const timeSelect = document.getElementById("time-select");
+  for (let h = 20; h <= 24; h++) {
+    [0, 30].forEach((m) => {
+      const hh = h % 24;
+      const ampm = hh < 12 ? "am" : "pm";
+      const dispH = hh % 12 === 0 ? 12 : hh % 12;
+      const dispM = m === 0 ? "00" : m;
+      const ts = `${dispH}:${dispM}${ampm}`;
+      const opt = document.createElement("option");
+      opt.value = opt.text = ts;
+      timeSelect.appendChild(opt);
+    });
+  }
+  const oneAm = document.createElement("option");
+  oneAm.value = oneAm.text = "1:00am";
+  timeSelect.appendChild(oneAm);
+
+  // Set initial selection and listener
+  selectedTime = timeSelect.value;
+  timeSelect.addEventListener("change", () => {
+    selectedTime = timeSelect.value;
+    draw();
+  });
 
   updateCanvasDimensions();
-  updateCanvas();
 }
 
 function draw() {
   background(bgColor);
-
   currentLevel = amplitude ? amplitude.getLevel() : 0;
 
   if (img) {
+    // scale & breathe
     maxSize = width * 0.85;
-    let scaleFactor = min(maxSize / img.width, maxSize / img.height, 1);
-    let newWidth = img.width * scaleFactor;
-    let newHeight = img.height * scaleFactor;
-
-    let mainReactScale = 1 + currentLevel * 0.15;
-    let newWidthReact = newWidth * mainReactScale;
-    let newHeightReact = newHeight * mainReactScale;
-    let xReactive = (width - newWidthReact) / 2;
-    let yReactive = (height - newHeightReact) / 2;
-
-    image(img, xReactive, yReactive, newWidthReact, newHeightReact);
+    let sf = min(maxSize / img.width, maxSize / img.height, 1);
+    let w0 = img.width * sf,
+      h0 = img.height * sf;
+    let bs = 1 + currentLevel * 0.15;
+    let w1 = w0 * bs,
+      h1 = h0 * bs;
+    let x0 = (width - w1) / 2,
+      y0 = (height - h1) / 2;
+    image(img, x0, y0, w1, h1);
 
     if (imageUploaded) {
-      drawRectangles(xReactive, yReactive, newWidthReact, newHeightReact, true);
-      drawRectangles(
-        xReactive,
-        yReactive,
-        newWidthReact,
-        newHeightReact,
-        false
-      );
+      drawRectangles(x0, y0, w1, h1, true);
+      drawRectangles(x0, y0, w1, h1, false);
     }
 
+    // artist name
     fill(textFillColor);
     textSize(textSizeValue);
-    textFont(font);
     textAlign(LEFT, TOP);
     text(artistName, 240, 100, 400);
 
-    let svgLeftAspect = svgLeftImg.width / svgLeftImg.height;
-    let svgRightAspect = svgRightImg.width / svgRightImg.height;
+    // event info
+    drawEventInfo();
 
-    let svgLeftHeight = svgSize / svgLeftAspect;
-    let svgRightHeight = svgSize / svgRightAspect;
-
-    // Draw background for svgLeftImg (using push/pop so it doesn't affect other drawing)
-    push();
-    rectMode(CORNER);
-    noStroke();
-    fill(bgColor);
-    rect(44 - 12, height - 160, svgSize + 20, svgLeftHeight + 20);
-    pop();
-
-    // Draw the svg images
+    // logo with dynamic margin
     tint(svgTintColor);
-    image(svgLeftImg, 44, height - 150, svgSize, svgLeftHeight);
+    let asp = svgRightImg.width / svgRightImg.height;
     image(
       svgRightImg,
-      width - (svgSize + 47),
-      height - 90,
-      svgSize,
-      svgRightHeight
+      width - logoSize - svgMargin.x,
+      height - logoSize / asp - svgMargin.y,
+      logoSize,
+      logoSize / asp
     );
     noTint();
   }
 }
 
-function updateText() {
-  let textX = 200;
-  let textY = 20;
-  let textWidth = 400;
-  let textHeight = 100;
-
-  fill(15);
-  noStroke();
-  rect(textX, textY, textWidth, textHeight);
-
-  fill(255);
-  textSize(70);
+function drawEventInfo() {
+  let lines = [selectedVenue, selectedDate, selectedTime];
+  textSize(eventTextSize);
   textFont(font);
   textAlign(LEFT, TOP);
-  textLeading(70);
-  text(artistName, textX, textY, textWidth);
+
+  let maxW = 0;
+  lines.forEach((l) => (maxW = max(maxW, textWidth(l))));
+
+  let pad = 10,
+    totalH = lines.length * (eventTextSize + 6) - 6,
+    bx = eventMargin.x + pad + maxW / 2,
+    by = height - eventMargin.y - pad - totalH / 2;
+
+  push();
+  rectMode(CENTER);
+  noStroke();
+  fill(bgColor);
+  rect(bx, by + 20, maxW + pad * 2, totalH + pad * 2 + 50);
+
+  fill(textFillColor);
+  let y0 = height - eventMargin.y - pad - totalH;
+  lines.forEach((l, i) =>
+    text(l, eventMargin.x + pad, y0 + i * (eventTextSize + 6))
+  );
+  pop();
 }
 
-function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
-  let centerXCanvas = width / 2;
-  let centerYCanvas = height / 2;
-  let multiplier = -1.25;
-
+function drawRectangles(x, y, imgW, imgH, isBelow) {
+  let cx = width / 2,
+    cy = height / 2,
+    mult = -1.25;
   for (let i = 0; i < placedRects.length; i++) {
     let r = placedRects[i];
-    const shouldDrawBelow = belowImageIndices.includes(i);
-    if (shouldDrawBelow !== isBelowImage) continue;
+    let below = belowImageIndices.includes(i);
+    if (below !== isBelow) continue;
 
-    let srcX = map(r.x - r.width / 2 - x, 0, imgWidth, 0, img.width);
-    let srcY = map(r.y - r.height / 2 - y, 0, imgHeight, 0, img.height);
-    let srcW = map(r.width, 0, imgWidth, 0, img.width);
-    let srcH = map(r.height, 0, imgHeight, 0, img.height);
+    let sx = map(r.x - r.width / 2 - x, 0, imgW, 0, img.width);
+    let sy = map(r.y - r.height / 2 - y, 0, imgH, 0, img.height);
+    let sw = map(r.width, 0, imgW, 0, img.width);
+    let sh = map(r.height, 0, imgH, 0, img.height);
+    sx = constrain(sx, 0, img.width - sw);
+    sy = constrain(sy, 0, img.height - sh);
 
-    srcX = constrain(srcX, 0, img.width - srcW);
-    srcY = constrain(srcY, 0, img.height - srcH);
-
-    let dx = centerXCanvas - r.x;
-    let dy = centerYCanvas - r.y;
-    let desiredOffsetX = dx * currentLevel * multiplier;
-    let desiredOffsetY = dy * currentLevel * multiplier;
-
-    if (r.offsetX === undefined) {
-      r.offsetX = desiredOffsetX;
-    } else {
-      r.offsetX = lerp(r.offsetX, desiredOffsetX, 0.35);
-    }
-    if (r.offsetY === undefined) {
-      r.offsetY = desiredOffsetY;
-    } else {
-      r.offsetY = lerp(r.offsetY, desiredOffsetY, 0.35);
-    }
+    let dx = cx - r.x,
+      dy = cy - r.y;
+    let targetX = dx * currentLevel * mult;
+    let targetY = dy * currentLevel * mult;
+    r.offsetX =
+      r.offsetX === undefined ? targetX : lerp(r.offsetX, targetX, 0.35);
+    r.offsetY =
+      r.offsetY === undefined ? targetY : lerp(r.offsetY, targetY, 0.35);
 
     copy(
       img,
-      srcX,
-      srcY,
-      srcW,
-      srcH,
+      sx,
+      sy,
+      sw,
+      sh,
       r.x + r.offsetX - r.width / 2,
       r.y + r.offsetY - r.height / 2,
       r.width,
@@ -270,149 +361,126 @@ function drawRectangles(x, y, imgWidth, imgHeight, isBelowImage) {
 }
 
 function regenerateRectangles() {
-  if (imageUploaded) {
-    placedRects = [];
+  if (!imageUploaded) return;
+  placedRects = [];
+  belowImageIndices = [];
 
-    let x = (width - maxSize) / 2;
-    let y = (height - maxSize * (img.height / img.width)) / 2;
-    let imgWidth = maxSize;
-    let imgHeight = maxSize * (img.height / img.width);
+  let imgW = maxSize;
+  let imgH = maxSize * (img.height / img.width);
+  let startX = (width - imgW) / 2;
+  let startY = (height - imgH) / 2;
 
-    for (let i = 0; i < rectCount; i++) {
-      let rectWidth = random(imgWidth * 0.07, imgWidth * 0.4);
-      let rectHeight = random(imgHeight * 0.07, imgHeight * 0.3);
-      let rectX, rectY;
-      let tries = 0;
-      const minDistance = 0;
-      const centerX = x + imgWidth / 2;
-      const centerY = y + imgHeight / 2;
-      let isValidPosition = false;
+  for (let i = 0; i < rectCount; i++) {
+    let w = random(imgW * 0.07, imgW * 0.4);
+    let h = random(imgH * 0.07, imgH * 0.3);
+    let px,
+      py,
+      tries = 0;
+    let centerX = startX + imgW / 2,
+      centerY = startY + imgH / 2;
 
-      while (!isValidPosition && tries < 100) {
-        rectX = random(x - 50, x + imgWidth + 20);
-        rectY = random(y - 60, y + imgHeight + 20);
-
-        const isFarEnoughFromCenter = dist(rectX, rectY, centerX, centerY) >= 0;
-        const isFarEnoughFromOtherRects = placedRects.every((rect) => {
-          return dist(rectX, rectY, rect.x, rect.y) >= minDistance;
-        });
-
-        isValidPosition = isFarEnoughFromCenter && isFarEnoughFromOtherRects;
-        tries++;
-      }
-
-      if (isValidPosition) {
-        let srcX = map(rectX - rectWidth / 2 - x, 0, imgWidth, 0, img.width);
-        let srcY = map(rectY - rectHeight / 2 - y, 0, imgHeight, 0, img.height);
-        let srcW = map(rectWidth, 0, imgWidth, 0, img.width);
-        let srcH = map(rectHeight, 0, imgHeight, 0, img.height);
-
-        placedRects.push({
-          x: rectX,
-          y: rectY,
-          width: rectWidth,
-          height: rectHeight,
-          srcX: constrain(srcX, 0, img.width - srcW),
-          srcY: constrain(srcY, 0, img.height - srcH),
-          srcW,
-          srcH,
-        });
-      }
+    while (tries < 100) {
+      px = random(startX - 50, startX + imgW + 20);
+      py = random(startY - 60, startY + imgH + 20);
+      let ok1 = dist(px, py, centerX, centerY) >= 0;
+      let ok2 = placedRects.every((o) => dist(px, py, o.x, o.y) >= 0);
+      if (ok1 && ok2) break;
+      tries++;
     }
+    if (tries === 100) continue;
 
-    draw();
-  }
-}
-
-function handleFile(event) {
-  const file = event.target.files[0];
-  if (file && file.type.startsWith("image")) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      img = loadImage(e.target.result, () => {
-        imageUploaded = true;
-        regenerateRectangles();
-        draw();
-      });
-    };
-    reader.readAsDataURL(file);
-  } else {
-    console.error("File is not an image");
-  }
-}
-
-function handleAudioFile(event) {
-  const file = event.target.files[0];
-  if (file && file.type.startsWith("audio")) {
-    const fileURL = URL.createObjectURL(file);
-
-    if (sound) {
-      sound.stop();
-      sound.disconnect();
-    }
-
-    sound = loadSound(
-      fileURL,
-      () => {
-        amplitude = new p5.Amplitude();
-        amplitude.setInput(sound);
-
-        sound.play();
-        loop();
-      },
-      () => {
-        console.error("Failed to load sound");
-      }
+    let sx = constrain(
+      map(px - w / 2 - startX, 0, imgW, 0, img.width),
+      0,
+      img.width - w
     );
-  } else {
-    console.error("File is not an audio file");
+    let sy = constrain(
+      map(py - h / 2 - startY, 0, imgH, 0, img.height),
+      0,
+      img.height - h
+    );
+    let sw = map(w, 0, imgW, 0, img.width);
+    let sh = map(h, 0, imgH, 0, img.height);
+
+    placedRects.push({
+      x: px,
+      y: py,
+      width: w,
+      height: h,
+      srcX: sx,
+      srcY: sy,
+      srcW: sw,
+      srcH: sh,
+    });
   }
+
+  let belowCount = floor(random(0, 3));
+  while (belowImageIndices.length < belowCount) {
+    let idx = floor(random(placedRects.length));
+    if (!belowImageIndices.includes(idx)) belowImageIndices.push(idx);
+  }
+
+  draw();
+}
+
+function handleFile(e) {
+  let file = e.target.files[0];
+  if (!file || !file.type.startsWith("image"))
+    return console.error("Not an image");
+  let reader = new FileReader();
+  reader.onload = (evt) => {
+    loadImage(evt.target.result, (loaded) => {
+      img = loaded;
+      imageUploaded = true;
+      regenerateRectangles();
+      draw();
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleAudioFile(e) {
+  let file = e.target.files[0];
+  if (!file || !file.type.startsWith("audio"))
+    return console.error("Not audio");
+  let url = URL.createObjectURL(file);
+  if (sound) {
+    sound.stop();
+    sound.disconnect();
+  }
+  sound = loadSound(url, () => {
+    amplitude = new p5.Amplitude();
+    amplitude.setInput(sound);
+    sound.play();
+    loop();
+  });
 }
 
 function toggleAudio() {
-  if (sound) {
-    if (sound.isPlaying()) {
-      sound.pause();
-      noLoop();
-    } else {
-      sound.play();
-      loop();
-    }
+  if (!sound) return console.error("No sound");
+  if (sound.isPlaying()) {
+    sound.pause();
+    noLoop();
   } else {
-    console.error("No sound loaded.");
+    sound.play();
+    loop();
   }
-}
-
-function updateCanvas() {
-  clear();
-  draw();
 }
 
 function saveCanvasAsImage() {
   saveCanvas(canvas, "NXNE_Post", "jpg");
 }
 
-function windowResized() {
-  updateCanvasDimensions();
-}
-
 function updateCanvasDimensions() {
-  let fixedHeight = 730;
-  let newWidth = fixedHeight * aspectRatio;
-  resizeCanvas(newWidth, fixedHeight);
-  updateCanvas();
+  let fixedH = 730;
+  let newW = fixedH * aspectRatio;
+  resizeCanvas(newW, fixedH);
   dimensionsDiv.position(
     canvas.position().x,
     canvas.position().y + height + 10
   );
 }
 
-function getBelowImageIndices(total) {
-  let numBelow = floor(random(0, 3));
-  let indices = [];
-  while (indices.length < numBelow) {
-    let index = floor(random(0, total));
-    if (!indices.includes(index)) indices.push(index);
-  }
-  return indices;
+function windowResized() {
+  updateCanvasDimensions();
 }

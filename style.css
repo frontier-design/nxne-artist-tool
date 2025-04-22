@@ -350,6 +350,39 @@ label.file-upload {
 }
 
 
+.event-inputs{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-inputs div{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.event-inputs h3{
+  border-bottom: none;
+}
+
+#venue-select,
+#date-select,
+#time-select{
+  width: 100%;
+  padding: 8px;
+  height: 35px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  resize: none; 
+  color: rgba(142, 142, 142, 1);
+  overflow-wrap: break-word;
+  white-space: pre-wrap; /* Preserve line breaks */
+  background-color: rgba(142, 142, 142, 0.2);
+}
+
 
 
 

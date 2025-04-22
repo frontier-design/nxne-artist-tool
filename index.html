@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title> NXNE Artist Tool </title>
-  <!-- <link rel="icon" type="image/png" href="./images/favicon.svg"> -->
-
   <link href="./images/faviconWhite.svg" rel="icon" media="(prefers-color-scheme: dark)">
   <link href="./images/faviconBlack.svg" rel="icon" media="(prefers-color-scheme: light)">
-
 
   <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -30,7 +28,7 @@
 
   <div class="container">
 
-    <div class="toggle-wrapper "></div>
+    <div class="toggle-wrapper"></div>
 
     <section class="upload-wrapper">
       <h3> Customize Your Post </h3>
@@ -40,16 +38,36 @@
         <label class="file-upload item" for="audio-upload" id="audio-upload-button">Upload Your <br> Audio</label>
         <input id="audio-upload" type="file" accept="audio/*" style="display: none;">
       </div>
+
       <div class="artist-name block">
         <textarea id="artist-name-input" rows="2" placeholder="Insert Your Artist Name"></textarea>
       </div>
+
+      <!-- New event inputs -->
+      <div class="event-inputs block">
+        <div>
+          <h3>Venue</h3>
+          <select id="venue-select" class="item"></select>
+        </div>
+
+        <div>
+          <h3>Date</h3>
+          <select id="date-select" class="item"></select>
+        </div>
+
+        <div>
+          <h3>Time</h3>
+          <select id="time-select" class="item"></select>
+        </div>
+      </div>
+
       <div class="color-options block">
-        <button class="color-button item" id="color-theme-1"> 1 </button>
-        <button class="color-button item" id="color-theme-6"> 2 </button>
-        <button class="color-button item" id="color-theme-3"> 3 </button>
-        <button class="color-button item" id="color-theme-4"> 4 </button>
-        <button class="color-button item" id="color-theme-5"> 5 </button>
-        <button class="color-button item" id="color-theme-2"> 6 </button>
+        <button class="color-button item" id="color-theme-1">1</button>
+        <button class="color-button item" id="color-theme-6">2</button>
+        <button class="color-button item" id="color-theme-3">3</button>
+        <button class="color-button item" id="color-theme-4">4</button>
+        <button class="color-button item" id="color-theme-5">5</button>
+        <button class="color-button item" id="color-theme-2">6</button>
       </div>
     </section>
 
@@ -64,8 +82,8 @@
     <section class="canvas-size-wrapper">
       <h3> Dimensions </h3>
       <div class="dimensions block">
-        <button class="post-dimensions item" id="post-dimensions"> 3:4 <br> Post </button>
-        <button class="reel-dimensions item" id="reel-dimensions"> 9:16 <br> Reel </button>
+        <button class="post-dimensions item" id="post-dimensions">3:4<br>Post</button>
+        <button class="reel-dimensions item" id="reel-dimensions">9:16<br>Reel</button>
       </div>
     </section>
 
@@ -76,9 +94,9 @@
       </div>
 
       <div class="record-settings block">
-        <div class=" item" id="recordBtn">
+        <div class="item" id="recordBtn">
           Download Video
-          <div class="item" id="statusIndicator"> </div>
+          <div class="item" id="statusIndicator"></div>
         </div>
       </div>
     </section>
@@ -99,28 +117,21 @@
     <p class="suggested-hashtags">Suggested hashtags: #NXNE2025, #MUSICFEST, #SOUNDON</p>
 
   </div>
+
+  <!-- Load venues list -->
+  <script src="venues.json"></script>
   <script src="popup.js"></script>
   <script src="toggleContainer.js"></script>
   <script src="record.js"></script>
   <script src="sketch.js"></script>
 
-
   <script>
+    // Refresh button press effect
     const refreshButton = document.getElementById("regenerate-button");
-
-    refreshButton.addEventListener("mousedown", () => {
-      refreshButton.style.backgroundColor = "#00009b";
-    });
-
-    refreshButton.addEventListener("mouseup", () => {
-      refreshButton.style.backgroundColor = "";
-    });
-
-    refreshButton.addEventListener("mouseleave", () => {
-      refreshButton.style.backgroundColor = "";
-    });
+    refreshButton.addEventListener("mousedown", () => { refreshButton.style.backgroundColor = "#00009b"; });
+    refreshButton.addEventListener("mouseup", () => { refreshButton.style.backgroundColor = ""; });
+    refreshButton.addEventListener("mouseleave", () => { refreshButton.style.backgroundColor = ""; });
   </script>
 </body>
-
 
 </html>

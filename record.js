@@ -281,10 +281,25 @@ recordBtn.addEventListener("click", async () => {
     statusIndicator.innerText =
       "Recording in progress. This will take 15 seconds.";
     recordBtn.disabled = true;
+
+    // Instead of stopping immediately at 15 seconds,
+    // request final data and then stop after a short delay to capture the last frame.
     recordingTimeout = setTimeout(() => {
       if (mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-        console.log("Automatically stopping recording after 15 seconds...");
+        // Request the final data chunk
+        mediaRecorder.requestData();
+        // Wait for one more animation frame, then delay further before stopping
+        requestAnimationFrame(() => {
+          // Increase the delay to 300ms (you can experiment with 300-500ms)
+          setTimeout(() => {
+            if (mediaRecorder.state !== "inactive") {
+              mediaRecorder.stop();
+              console.log(
+                "Automatically stopping recording after 15 seconds..."
+              );
+            }
+          }, 300);
+        });
       }
     }, 15000);
   } catch (err) {
