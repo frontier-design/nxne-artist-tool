@@ -126,9 +126,9 @@ function setup() {
     aspectRatio = 9 / 16;
     textSizeValue = 50;
     textLeading(50);
-    logoSize = 100; // Reel: smaller logo
+    logoSize = 120; // Reel: smaller logo
     eventTextSize = 20; // Reel: smaller event text
-    svgMargin.x = 270;
+    svgMargin.x = 250;
     svgMargin.y = 55 + 15;
     eventMargin.x = 30;
     eventMargin.y = 80 + 20;
