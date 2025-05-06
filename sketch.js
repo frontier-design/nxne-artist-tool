@@ -52,6 +52,7 @@ let venuesList = [
   "The Pilot",
   "Dance Cave",
   "Lee's Palace",
+  "Poetry Jazz Café",
 ];
 let selectedVenue = "";
 const dateList = [
@@ -239,7 +240,7 @@ function setup() {
   oneAm.value = oneAm.text = "1:00am";
   timeSelect.appendChild(oneAm);
 
-  // Set initial selection and listener
+  // Set initial selection   listener
   selectedTime = timeSelect.value;
   timeSelect.addEventListener("change", () => {
     selectedTime = timeSelect.value;
